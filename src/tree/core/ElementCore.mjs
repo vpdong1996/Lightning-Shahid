@@ -723,10 +723,6 @@ export default class ElementCore {
             removed[i].setParent(null);
         }
         for (let i = 0, n = added.length; i < n; i++) {
-            //inherit ignoreRTL from parent if child is not setted
-            if (this._ignoreRTL && added[i].ignoreRTL != false) {
-                added[i].ignoreRTL = this._ignoreRTL;
-            }
             added[i].setParent(this);
         }
     }
