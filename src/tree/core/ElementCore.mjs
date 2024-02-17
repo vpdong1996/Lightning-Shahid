@@ -127,6 +127,11 @@ export default class ElementCore {
         this._zParent = null;
 
         this._isRoot = false;
+        
+        /**
+         * RTL will be ignore. LTR is applied
+         */
+        this._ignoreRTL = null;
 
         /**
          * Iff true, during zSort, this element should be 're-sorted' because either:
@@ -529,7 +534,7 @@ export default class ElementCore {
         let pivotXMul = this._pivotX * this._w;
         let pivotYMul = this._pivotY * this._h;
         let px;
-        if (window.isRTL) {
+        if (window.isRTL && !this._ignoreRTL) {
             px = this._x + (pivotXMul * this._localTa + pivotYMul * this._localTb) - pivotXMul;
         } else {
             px = this._x - (pivotXMul * this._localTa + pivotYMul * this._localTb) + pivotXMul;
@@ -635,6 +640,11 @@ export default class ElementCore {
                 }
             }
 
+            if (this._ignoreRTL != false) {
+                //Inherit ignoreRTL value from parent if it isn't setted
+                this._setIgnoreRTL(parent);
+            }
+
             // Tree order did change: even if zParent stays the same, we must resort.
             this._zIndexResort = true;
             if (this._zParent) {
@@ -650,6 +660,18 @@ export default class ElementCore {
             }
         }
     };
+
+    _setIgnoreRTL(parent) {
+        if (parent.ignoreRTL && parent._children) {
+            for (let i = 0, n = parent._children.length; i < n; i++) {
+                let c = parent._children[i];
+                if (c && c.ignoreRTL != false) {
+                    c.ignoreRTL = parent.ignoreRTL;
+                    c._setIgnoreRTL(c);
+                }
+            }
+        }
+    }
 
     enableZSort(force = false) {
         if (!this._zSort && this._zContextUsage > 0) {
@@ -701,6 +723,10 @@ export default class ElementCore {
             removed[i].setParent(null);
         }
         for (let i = 0, n = added.length; i < n; i++) {
+            //inherit ignoreRTL from parent if child is not setted
+            if (this._ignoreRTL && added[i].ignoreRTL != false) {
+                added[i].ignoreRTL = this._ignoreRTL;
+            }
             added[i].setParent(this);
         }
     }
@@ -1042,6 +1068,14 @@ export default class ElementCore {
         }
     };
 
+    get ignoreRTL() {
+        return this._ignoreRTL;
+    }
+
+    set ignoreRTL(v) {
+        this._ignoreRTL = v;
+    }
+
     get colorUl() {
         return this._colorUl;
     }
@@ -1356,7 +1390,7 @@ export default class ElementCore {
 
             if (recalc & 6) {
                 let calculatedX = this._localPx;
-                if (window.isRTL) {
+                if (window.isRTL && !this._ignoreRTL) {
                     const parentW = this._element.__parent ? this._parent.w || 0 : this.ctx.stage.getOption('w');
                     calculatedX = parentW - (this._w || 0) - this._localPx;
                 }
@@ -1404,7 +1438,7 @@ export default class ElementCore {
 
                 if (init || (recalc & 6)) {
                     let calculatedX = this._localPx;
-                    if (window.isRTL) {
+                    if (window.isRTL && !this._ignoreRTL) {
                       const parentW = this._element.__parent
                         ? this._parent.w || 0
                         : this.ctx.stage.getOption("w");
