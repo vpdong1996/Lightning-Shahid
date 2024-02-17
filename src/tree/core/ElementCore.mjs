@@ -662,7 +662,7 @@ export default class ElementCore {
     };
 
     _setIgnoreRTL(parent) {
-        if (parent.ignoreRTL && parent._children) {
+        if (parent && parent.ignoreRTL && parent._children) {
             for (let i = 0, n = parent._children.length; i < n; i++) {
                 let c = parent._children[i];
                 if (c && c.ignoreRTL != false) {
