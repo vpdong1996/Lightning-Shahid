@@ -890,6 +890,14 @@ declare namespace Element {
     flexItem: Element.FlexItem | false;
 
     /**
+     * ignoreRTL
+     * 
+     * @remarks
+     * Ignore apply RTL direction if `window.isRTL=true`. Effected to nested children if they are not setted
+     */
+    ignoreRTL: boolean;
+
+    /**
      * Starts a smooth transition for all the included properties of the object
      *
      * @remarks
@@ -1727,6 +1735,9 @@ declare class Element<
   rttLazy: boolean;
 
   renderOffscreen: boolean;
+
+  get ignoreRTL(): boolean;
+  set ignoreRTL(v: boolean);
 
   colorizeResultTexture: boolean;
 

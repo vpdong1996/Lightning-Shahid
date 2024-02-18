@@ -117,6 +117,8 @@ declare class ElementCore {
   set visible(v: boolean);
   get zIndex(): number;
   set zIndex(v: number);
+  get ignoreRTL(): boolean;
+  set ignoreRTL(v: boolean);
 
   /**
    * Fill the array `children` with all the ElementCore instances (including itself and
