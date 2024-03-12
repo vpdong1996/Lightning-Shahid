@@ -7,35 +7,55 @@
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, global2.lng = factory());
 })(this, function() {
   "use strict";
-  function ownKeys(object, enumerableOnly) {
-    var keys = Object.keys(object);
-    if (Object.getOwnPropertySymbols) {
-      var symbols = Object.getOwnPropertySymbols(object);
-      if (enumerableOnly) {
-        symbols = symbols.filter(function(sym) {
-          return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-        });
-      }
-      keys.push.apply(keys, symbols);
-    }
-    return keys;
+  function _callSuper(t, o, e) {
+    return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e));
   }
-  function _objectSpread2(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-      if (i % 2) {
-        ownKeys(Object(source), true).forEach(function(key) {
-          _defineProperty(target, key, source[key]);
-        });
-      } else if (Object.getOwnPropertyDescriptors) {
-        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-      } else {
-        ownKeys(Object(source)).forEach(function(key) {
-          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-        });
-      }
+  function _isNativeReflectConstruct() {
+    try {
+      var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {
+      }));
+    } catch (t2) {
     }
-    return target;
+    return (_isNativeReflectConstruct = function() {
+      return !!t;
+    })();
+  }
+  function ownKeys(e, r) {
+    var t = Object.keys(e);
+    if (Object.getOwnPropertySymbols) {
+      var o = Object.getOwnPropertySymbols(e);
+      r && (o = o.filter(function(r2) {
+        return Object.getOwnPropertyDescriptor(e, r2).enumerable;
+      })), t.push.apply(t, o);
+    }
+    return t;
+  }
+  function _objectSpread2(e) {
+    for (var r = 1; r < arguments.length; r++) {
+      var t = null != arguments[r] ? arguments[r] : {};
+      r % 2 ? ownKeys(Object(t), true).forEach(function(r2) {
+        _defineProperty(e, r2, t[r2]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r2) {
+        Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
+      });
+    }
+    return e;
+  }
+  function _toPrimitive(t, r) {
+    if ("object" != typeof t || !t)
+      return t;
+    var e = t[Symbol.toPrimitive];
+    if (void 0 !== e) {
+      var i = e.call(t, r || "default");
+      if ("object" != typeof i)
+        return i;
+      throw new TypeError("@@toPrimitive must return a primitive value.");
+    }
+    return ("string" === r ? String : Number)(t);
+  }
+  function _toPropertyKey(t) {
+    var i = _toPrimitive(t, "string");
+    return "symbol" == typeof i ? i : String(i);
   }
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -49,7 +69,7 @@
       descriptor.configurable = true;
       if ("value" in descriptor)
         descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
+      Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
     }
   }
   function _createClass(Constructor, protoProps, staticProps) {
@@ -57,9 +77,13 @@
       _defineProperties(Constructor.prototype, protoProps);
     if (staticProps)
       _defineProperties(Constructor, staticProps);
+    Object.defineProperty(Constructor, "prototype", {
+      writable: false
+    });
     return Constructor;
   }
   function _defineProperty(obj, key, value) {
+    key = _toPropertyKey(key);
     if (key in obj) {
       Object.defineProperty(obj, key, {
         value,
@@ -83,36 +107,24 @@
         configurable: true
       }
     });
+    Object.defineProperty(subClass, "prototype", {
+      writable: false
+    });
     if (superClass)
       _setPrototypeOf(subClass, superClass);
   }
   function _getPrototypeOf(o) {
-    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf2(o2) {
+    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf2(o2) {
       return o2.__proto__ || Object.getPrototypeOf(o2);
     };
     return _getPrototypeOf(o);
   }
   function _setPrototypeOf(o, p) {
-    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf2(o2, p2) {
+    _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf2(o2, p2) {
       o2.__proto__ = p2;
       return o2;
     };
     return _setPrototypeOf(o, p);
-  }
-  function _isNativeReflectConstruct() {
-    if (typeof Reflect === "undefined" || !Reflect.construct)
-      return false;
-    if (Reflect.construct.sham)
-      return false;
-    if (typeof Proxy === "function")
-      return true;
-    try {
-      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {
-      }));
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
   function _newArrowCheck(innerThis, boundThis) {
     if (innerThis !== boundThis) {
@@ -128,21 +140,10 @@
   function _possibleConstructorReturn(self2, call) {
     if (call && (typeof call === "object" || typeof call === "function")) {
       return call;
+    } else if (call !== void 0) {
+      throw new TypeError("Derived constructors may only return object or undefined");
     }
     return _assertThisInitialized(self2);
-  }
-  function _createSuper(Derived) {
-    var hasNativeReflectConstruct = _isNativeReflectConstruct();
-    return function _createSuperInternal() {
-      var Super = _getPrototypeOf(Derived), result;
-      if (hasNativeReflectConstruct) {
-        var NewTarget = _getPrototypeOf(this).constructor;
-        result = Reflect.construct(Super, arguments, NewTarget);
-      } else {
-        result = Super.apply(this, arguments);
-      }
-      return _possibleConstructorReturn(this, result);
-    };
   }
   function _superPropBase(object, property) {
     while (!Object.prototype.hasOwnProperty.call(object, property)) {
@@ -152,22 +153,22 @@
     }
     return object;
   }
-  function _get(target, property, receiver) {
+  function _get() {
     if (typeof Reflect !== "undefined" && Reflect.get) {
-      _get = Reflect.get;
+      _get = Reflect.get.bind();
     } else {
-      _get = function _get2(target2, property2, receiver2) {
-        var base = _superPropBase(target2, property2);
+      _get = function _get2(target, property, receiver) {
+        var base = _superPropBase(target, property);
         if (!base)
           return;
-        var desc = Object.getOwnPropertyDescriptor(base, property2);
+        var desc = Object.getOwnPropertyDescriptor(base, property);
         if (desc.get) {
-          return desc.get.call(receiver2);
+          return desc.get.call(arguments.length < 3 ? target : receiver);
         }
         return desc.value;
       };
     }
-    return _get(target, property, receiver || target);
+    return _get.apply(this, arguments);
   }
   function set(target, property, value, receiver) {
     if (typeof Reflect !== "undefined" && Reflect.set) {
@@ -203,7 +204,7 @@
   function _set(target, property, value, receiver, isStrict) {
     var s = set(target, property, value, receiver || target);
     if (!s && isStrict) {
-      throw new Error("failed to set property");
+      throw new TypeError("failed to set property");
     }
     return value;
   }
@@ -3190,10 +3191,10 @@
       key: "forEachEnabledElement",
       value: function forEachEnabledElement(cb) {
         var _this = this;
-        this.textures.forEach(function(texture) {
+        this.textures.forEach((function(texture) {
           _newArrowCheck(this, _this);
           texture.elements.forEach(cb);
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "hasEnabledElements",
@@ -3204,16 +3205,16 @@
       key: "forEachActiveElement",
       value: function forEachActiveElement(cb) {
         var _this2 = this;
-        this.textures.forEach(function(texture) {
+        this.textures.forEach((function(texture) {
           var _this3 = this;
           _newArrowCheck(this, _this2);
-          texture.elements.forEach(function(element) {
+          texture.elements.forEach((function(element) {
             _newArrowCheck(this, _this3);
             if (element.active) {
               cb(element);
             }
-          }.bind(this));
-        }.bind(this));
+          }).bind(this));
+        }).bind(this));
       }
     }, {
       key: "getRenderWidth",
@@ -3283,8 +3284,8 @@
           return;
         }
         if (!this._nativeTexture && !this.isLoading()) {
-          this.loadingSince = new Date().getTime();
-          this._cancelCb = this.loader(function(err, options) {
+          this.loadingSince = (/* @__PURE__ */ new Date()).getTime();
+          this._cancelCb = this.loader((function(err, options) {
             _newArrowCheck(this, _this4);
             if (this.isLoading()) {
               this._cancelCb = null;
@@ -3303,7 +3304,7 @@
                 }
               }
             }
-          }.bind(this), this);
+          }).bind(this), this);
         }
       }
     }, {
@@ -3351,10 +3352,10 @@
       value: function onLoad() {
         var _this5 = this;
         if (this.isUsed()) {
-          this.textures.forEach(function(texture) {
+          this.textures.forEach((function(texture) {
             _newArrowCheck(this, _this5);
             texture.onLoad();
-          }.bind(this));
+          }).bind(this));
         }
       }
     }, {
@@ -3394,21 +3395,21 @@
         this.w = w;
         this.h = h;
         if (!prevNativeTexture && this._nativeTexture) {
-          this.forEachActiveElement(function(element) {
+          this.forEachActiveElement((function(element) {
             _newArrowCheck(this, _this6);
             return element.onTextureSourceLoaded();
-          }.bind(this));
+          }).bind(this));
         }
         if (!this._nativeTexture) {
-          this.forEachActiveElement(function(element) {
+          this.forEachActiveElement((function(element) {
             _newArrowCheck(this, _this6);
             return element._setDisplayedTexture(null);
-          }.bind(this));
+          }).bind(this));
         }
-        this.forEachEnabledElement(function(element) {
+        this.forEachEnabledElement((function(element) {
           _newArrowCheck(this, _this6);
           return element._updateDimensions();
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "onError",
@@ -3417,10 +3418,10 @@
         this._loadError = e;
         this.loadingSince = 0;
         console.error("[Lightning] texture load error", e, this.lookupId);
-        this.forEachActiveElement(function(element) {
+        this.forEachActiveElement((function(element) {
           _newArrowCheck(this, _this7);
           return element.onTextureSourceLoadError(e);
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "free",
@@ -3520,11 +3521,11 @@
             var h = resultTexture ? resultTexture.h : 0;
             this._resultTextureSource.replaceNativeTexture(resultTexture, w, h);
           }
-          this._resultTextureSource.forEachEnabledElement(function(element) {
+          this._resultTextureSource.forEachEnabledElement((function(element) {
             _newArrowCheck(this, _this);
             element._updateDimensions();
             element.core.setHasRenderUpdates(3);
-          }.bind(this));
+          }).bind(this));
         }
       }
     }, {
@@ -3657,6 +3658,7 @@
       this._forceZIndexContext = false;
       this._zParent = null;
       this._isRoot = false;
+      this._ignoreRTL = null;
       this._zIndexResort = false;
       this._shader = null;
       this._renderToTextureEnabled = false;
@@ -4036,7 +4038,7 @@
         var pivotXMul = this._pivotX * this._w;
         var pivotYMul = this._pivotY * this._h;
         var px;
-        if (window.isRTL) {
+        if (window.isRTL && !this._ignoreRTL) {
           px = this._x + (pivotXMul * this._localTa + pivotYMul * this._localTb) - pivotXMul;
         } else {
           px = this._x - (pivotXMul * this._localTa + pivotYMul * this._localTb) + pivotXMul;
@@ -4120,6 +4122,9 @@
               this.enableZContext(prevParent.findZContext());
             }
           }
+          if (this._ignoreRTL != false) {
+            this._setIgnoreRTL(parent);
+          }
           this._zIndexResort = true;
           if (this._zParent) {
             this._zParent.enableZSort();
@@ -4129,6 +4134,19 @@
             if (newShaderOwner !== this._shaderOwner) {
               this.setHasRenderUpdates(1);
               this._setShaderOwnerRecursive(newShaderOwner);
+            }
+          }
+        }
+      }
+    }, {
+      key: "_setIgnoreRTL",
+      value: function _setIgnoreRTL(parent) {
+        if (parent && parent.ignoreRTL && parent._children) {
+          for (var i = 0, n = parent._children.length; i < n; i++) {
+            var c = parent._children[i];
+            if (c && c.ignoreRTL != false) {
+              c.ignoreRTL = parent.ignoreRTL;
+              c._setIgnoreRTL(c);
             }
           }
         }
@@ -4453,12 +4471,12 @@
         var _this = this;
         if (prevZContext && prevZContext._zContextUsage > 0) {
           var results = this._getZIndexedDescs();
-          results.forEach(function(c) {
+          results.forEach((function(c) {
             _newArrowCheck(this, _this);
             if (this.isAncestorOf(c) && c._zIndex !== 0) {
               c.setZParent(this);
             }
-          }.bind(this));
+          }).bind(this));
         }
       }
     }, {
@@ -4497,6 +4515,14 @@
             }
           });
         }
+      }
+    }, {
+      key: "ignoreRTL",
+      get: function get() {
+        return this._ignoreRTL;
+      },
+      set: function set2(v) {
+        this._ignoreRTL = v;
       }
     }, {
       key: "colorUl",
@@ -4780,7 +4806,7 @@
           }
           if (recalc & 6) {
             var calculatedX = this._localPx;
-            if (window.isRTL) {
+            if (window.isRTL && !this._ignoreRTL) {
               var parentW = this._element.__parent ? this._parent.w || 0 : this.ctx.stage.getOption("w");
               calculatedX = parentW - (this._w || 0) - this._localPx;
             }
@@ -4818,7 +4844,7 @@
             }
             if (init || recalc & 6) {
               var _calculatedX = this._localPx;
-              if (window.isRTL) {
+              if (window.isRTL && !this._ignoreRTL) {
                 var _parentW = this._element.__parent ? this._parent.w || 0 : this.ctx.stage.getOption("w");
                 _calculatedX = _parentW - (this._w || 0) - this._localPx;
               }
@@ -5550,11 +5576,11 @@
       key: "once",
       value: function once(name, listener) {
         var _this = this;
-        var _wrapper = function wrapper(arg1, arg2, arg3) {
+        var _wrapper = (function wrapper(arg1, arg2, arg3) {
           _newArrowCheck(this, _this);
           listener(arg1, arg2, arg3);
           this.off(name, _wrapper);
-        }.bind(this);
+        }).bind(this);
         _wrapper.__originalFunc = listener;
         this.on(name, _wrapper);
       }
@@ -5599,10 +5625,10 @@
               if (index >= 0) {
                 listeners.splice(index, 1);
               }
-              index = listeners.map(function(l) {
+              index = listeners.map((function(l) {
                 _newArrowCheck(this, _this2);
                 return l.__originalFunc;
-              }.bind(this)).indexOf(listener);
+              }).bind(this)).indexOf(listener);
               if (index >= 0) {
                 listeners.splice(index, 1);
               }
@@ -5704,10 +5730,10 @@
       key: "redraw",
       value: function redraw() {
         var _this = this;
-        this._elements.forEach(function(elementCore) {
+        this._elements.forEach((function(elementCore) {
           _newArrowCheck(this, _this);
           elementCore.setHasRenderUpdates(2);
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "patch",
@@ -5870,12 +5896,12 @@
         if (this._resizeMode) {
           this._applyResizeMode();
         }
-        this.elements.forEach(function(element) {
+        this.elements.forEach((function(element) {
           _newArrowCheck(this, _this);
           if (element.active) {
             element.onTextureSourceLoaded();
           }
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "_checkForNewerReusableTextureSource",
@@ -6002,30 +6028,30 @@
               if (this._resizeMode) {
                 this._applyResizeMode();
               }
-              this.elements.forEach(function(element) {
+              this.elements.forEach((function(element) {
                 _newArrowCheck(this, _this2);
                 if (element.active) {
                   element._setDisplayedTexture(this);
                 }
-              }.bind(this));
+              }).bind(this));
             } else {
               var loadError = newSource.loadError;
               if (loadError) {
-                this.elements.forEach(function(element) {
+                this.elements.forEach((function(element) {
                   _newArrowCheck(this, _this2);
                   if (element.active) {
                     element.onTextureSourceLoadError(loadError);
                   }
-                }.bind(this));
+                }).bind(this));
               }
             }
           } else {
-            this.elements.forEach(function(element) {
+            this.elements.forEach((function(element) {
               _newArrowCheck(this, _this2);
               if (element.active) {
                 element._setDisplayedTexture(null);
               }
-            }.bind(this));
+            }).bind(this));
           }
         }
       }
@@ -6307,11 +6333,10 @@
   Texture.id = 0;
   var ImageTexture = /* @__PURE__ */ function(_Texture) {
     _inherits(ImageTexture2, _Texture);
-    var _super = _createSuper(ImageTexture2);
     function ImageTexture2(stage) {
       var _this;
       _classCallCheck(this, ImageTexture2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, ImageTexture2, [stage]);
       _this._src = void 0;
       _this._hasAlpha = false;
       return _this;
@@ -6360,13 +6385,13 @@
             src = this.stage.getOption("srcBasePath") + src;
           }
         }
-        return function(cb) {
+        return (function(cb) {
           _newArrowCheck(this, _this2);
           return this.stage.platform.loadSrcTexture({
             src,
             hasAlpha
           }, cb);
-        }.bind(this);
+        }).bind(this);
       }
     }, {
       key: "getNonDefaults",
@@ -6490,15 +6515,15 @@
           var fontSetting = getFontSetting(this._settings.fontFace, this._settings.fontStyle, this._settings.fontSize, this.getPrecision(), this._stage.getOption("defaultFontFace"), this._settings.fontWeight);
           try {
             if (!document.fonts.check(fontSetting, this._settings.text)) {
-              return document.fonts.load(fontSetting, this._settings.text).catch(function(err) {
+              return document.fonts.load(fontSetting, this._settings.text).catch((function(err) {
                 _newArrowCheck(this, _this);
                 console.warn("[Lightning] Font load error", err, fontSetting);
-              }.bind(this)).then(function() {
+              }).bind(this)).then((function() {
                 _newArrowCheck(this, _this);
                 if (!document.fonts.check(fontSetting, this._settings.text)) {
                   console.warn("[Lightning] Font not found", fontSetting);
                 }
-              }.bind(this));
+              }).bind(this));
             }
           } catch (e) {
             console.warn("[Lightning] Can't check font loading for " + fontSetting);
@@ -6513,10 +6538,10 @@
         if (!loadPromise) {
           return Utils$1.isSpark ? this._stage.platform.drawText(this) : this._draw();
         } else {
-          return loadPromise.then(function() {
+          return loadPromise.then((function() {
             _newArrowCheck(this, _this2);
             return Utils$1.isSpark ? this._stage.platform.drawText(this) : this._draw();
-          }.bind(this));
+          }).bind(this));
         }
       }
     }, {
@@ -6716,26 +6741,18 @@
           }
         }
         var prevShadowSettings = null;
-        if (this._settings.shadow) {
-          prevShadowSettings = [this._context.shadowColor, this._context.shadowOffsetX, this._context.shadowOffsetY, this._context.shadowBlur];
-          this._context.shadowColor = StageUtils.getRgbaString(this._settings.shadowColor);
-          this._context.shadowOffsetX = this._settings.shadowOffsetX * precision;
-          this._context.shadowOffsetY = this._settings.shadowOffsetY * precision;
-          this._context.shadowBlur = this._settings.shadowBlur * precision;
-        }
         this._context.fillStyle = StageUtils.getRgbaString(this._settings.textColor);
-        for (var _i5 = 0, _n2 = drawLines.length; _i5 < _n2; _i5++) {
-          var _drawLine = drawLines[_i5];
-          if (renderInfo.letterSpacing === 0) {
-            this._context.fillText(_drawLine.text, _drawLine.x, _drawLine.y);
-          } else {
-            var textSplit = _drawLine.text.split("");
-            var x = _drawLine.x;
-            for (var _i6 = 0, j = textSplit.length; _i6 < j; _i6++) {
-              this._context.fillText(textSplit[_i6], x, _drawLine.y);
-              x += this.measureText(textSplit[_i6], renderInfo.letterSpacing);
-            }
+        if (this._settings.shadow) {
+          prevShadowSettings = [this._context.shadowColor[0], this._context.shadowOffsetX, this._context.shadowOffsetY, this._context.shadowBlur[0]];
+          for (var _i5 in this._settings.shadowColor) {
+            this._context.shadowColor = StageUtils.getRgbaString(this._settings.shadowColor[_i5]);
+            this._context.shadowOffsetX = this._settings.shadowOffsetX * precision;
+            this._context.shadowOffsetY = this._settings.shadowOffsetY * precision;
+            this._context.shadowBlur = this._settings.shadowBlur[_i5] * precision;
+            this.renderText(drawLines, renderInfo);
           }
+        } else {
+          this.renderText(drawLines, renderInfo);
         }
         if (prevShadowSettings) {
           this._context.shadowColor = prevShadowSettings[0];
@@ -6793,6 +6810,23 @@
         var space = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
         return measureText(this._context, word, space);
       }
+    }, {
+      key: "renderText",
+      value: function renderText(drawLines, renderInfo) {
+        for (var i = 0, n = drawLines.length; i < n; i++) {
+          var drawLine = drawLines[i];
+          if (renderInfo.letterSpacing === 0) {
+            this._context.fillText(drawLine.text, drawLine.x, drawLine.y + 5);
+          } else {
+            var textSplit = drawLine.text.split("");
+            var x = drawLine.x;
+            for (var _i6 = 0, j = textSplit.length; _i6 < j; _i6++) {
+              this._context.fillText(textSplit[_i6], x, drawLine.y);
+              x += this.measureText(textSplit[_i6], renderInfo.letterSpacing);
+            }
+          }
+        }
+      }
     }]);
     return TextTextureRenderer2;
   }();
@@ -6825,15 +6859,15 @@
           var fontSetting = getFontSetting(this._settings.fontFace, this._settings.fontStyle, this._settings.fontSize, this.getPrecision(), this._stage.getOption("defaultFontFace"), this._settings.fontWeight);
           try {
             if (!document.fonts.check(fontSetting, this._settings.text)) {
-              return document.fonts.load(fontSetting, this._settings.text).catch(function(err) {
+              return document.fonts.load(fontSetting, this._settings.text).catch((function(err) {
                 _newArrowCheck(this, _this);
                 console.warn("Font load error", err, fontSetting);
-              }.bind(this)).then(function() {
+              }).bind(this)).then((function() {
                 _newArrowCheck(this, _this);
                 if (!document.fonts.check(fontSetting, this._settings.text)) {
                   console.warn("Font not found", fontSetting);
                 }
-              }.bind(this));
+              }).bind(this));
             }
           } catch (e) {
             console.warn("Can't check font loading for " + fontSetting);
@@ -6848,10 +6882,10 @@
         if (!loadPromise) {
           return Utils$1.isSpark ? this._stage.platform.drawText(this) : this._draw();
         } else {
-          return loadPromise.then(function() {
+          return loadPromise.then((function() {
             _newArrowCheck(this, _this2);
             return Utils$1.isSpark ? this._stage.platform.drawText(this) : this._draw();
-          }.bind(this));
+          }).bind(this));
         }
       }
     }, {
@@ -6930,10 +6964,10 @@
           text = this.indent(text, renderInfo.textIndent);
         }
         if (renderInfo.wordBreak) {
-          text = text.reduce(function(acc, t2) {
+          text = text.reduce((function(acc, t2) {
             _newArrowCheck(this, _this3);
             return acc.concat(this.wordBreak(t2, wrapWidth, renderInfo.baseFont));
-          }.bind(this), []);
+          }).bind(this), []);
           this.resetFontStyle();
         }
         var x = paddingLeft;
@@ -7020,27 +7054,27 @@
         try {
           for (_iterator4.s(); !(_step4 = _iterator4.n()).done; ) {
             var _l3 = _step4.value;
-            _l3.width = _l3.text.reduce(function(acc, t2) {
+            _l3.width = _l3.text.reduce((function(acc, t2) {
               _newArrowCheck(this, _this3);
               return acc + t2.width;
-            }.bind(this), 0);
+            }).bind(this), 0);
           }
         } catch (err) {
           _iterator4.e(err);
         } finally {
           _iterator4.f();
         }
-        renderInfo.width = this._settings.w != 0 ? this._settings.w * precision : Math.max.apply(Math, _toConsumableArray(renderInfo.lines.map(function(l2) {
+        renderInfo.width = this._settings.w != 0 ? this._settings.w * precision : Math.max.apply(Math, _toConsumableArray(renderInfo.lines.map((function(l2) {
           _newArrowCheck(this, _this3);
           return l2.width;
-        }.bind(this)))) + paddingRight;
+        }).bind(this)))) + paddingRight;
         renderInfo.w = renderInfo.width;
         if (renderInfo.maxLines && renderInfo.lineNum > renderInfo.maxLines && renderInfo.maxLinesSuffix) {
           var index = renderInfo.maxLines - 1;
-          var lastLineText = text.filter(function(t2) {
+          var lastLineText = text.filter((function(t2) {
             _newArrowCheck(this, _this3);
             return t2.lineNo == index;
-          }.bind(this));
+          }).bind(this));
           var _suffix = renderInfo.maxLinesSuffix;
           _suffix = this.tokenize(_suffix);
           _suffix = this.parse(_suffix);
@@ -7059,16 +7093,16 @@
             _iterator5.f();
           }
           var spl = _suffix.length + 1;
-          var _w = lastLineText.reduce(function(acc, t2) {
+          var _w = lastLineText.reduce((function(acc, t2) {
             _newArrowCheck(this, _this3);
             return acc + t2.width;
-          }.bind(this), 0);
+          }).bind(this), 0);
           while (_w > renderInfo.width || isSpace(lastLineText[lastLineText.length - spl].text)) {
             lastLineText.splice(lastLineText.length - spl, 1);
-            _w = lastLineText.reduce(function(acc, t2) {
+            _w = lastLineText.reduce((function(acc, t2) {
               _newArrowCheck(this, _this3);
               return acc + t2.width;
-            }.bind(this), 0);
+            }).bind(this), 0);
             if (lastLineText.length < spl) {
               break;
             }
@@ -7213,14 +7247,14 @@
         if (renderInfo.cutSx || renderInfo.cutSy) {
           this._context.translate(renderInfo.cutSx, renderInfo.cutSy);
         }
-        renderInfo.lines = renderInfo.lines.map(function(l2) {
+        renderInfo.lines = renderInfo.lines.map((function(l2) {
           var _this5 = this;
           _newArrowCheck(this, _this4);
-          return l2.text.reduce(function(acc, v) {
+          return l2.text.reduce((function(acc, v) {
             _newArrowCheck(this, _this5);
             return acc + v.text;
-          }.bind(this), "");
-        }.bind(this));
+          }).bind(this), "");
+        }).bind(this));
         if (renderInfo.maxLines) {
           renderInfo.lines = renderInfo.lines.slice(0, renderInfo.maxLines);
         }
@@ -7246,7 +7280,7 @@
         var colorStack = [StageUtils.getRgbaString(this._settings.textColor)];
         var color = 0;
         var colorRegexp = /<color=(0[xX][0-9a-fA-F]{8})>/;
-        return tokens.map(function(t) {
+        return tokens.map((function(t) {
           _newArrowCheck(this, _this6);
           if (t == "<i>") {
             italic += 1;
@@ -7278,10 +7312,10 @@
             bold,
             color: colorStack[color]
           };
-        }.bind(this)).filter(function(o) {
+        }).bind(this)).filter((function(o) {
           _newArrowCheck(this, _this6);
           return o.text != "";
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "applyFontStyle",
@@ -7314,12 +7348,12 @@
             this.applyFontStyle(p, baseFont);
             p.width = this.measureText(p.text, letterSpacing);
             if (letterSpacing > 0) {
-              p.letters = p.text.split("").map(function(l2) {
+              p.letters = p.text.split("").map((function(l2) {
                 _newArrowCheck(this, _this7);
                 return {
                   text: l2
                 };
-              }.bind(this));
+              }).bind(this));
               var _iterator12 = _createForOfIteratorHelper(p.letters), _step12;
               try {
                 for (_iterator12.s(); !(_step12 = _iterator12.n()).done; ) {
@@ -7507,11 +7541,10 @@
   }();
   var TextTexture = /* @__PURE__ */ function(_Texture) {
     _inherits(TextTexture2, _Texture);
-    var _super = _createSuper(TextTexture2);
     function TextTexture2(stage) {
       var _this;
       _classCallCheck(this, TextTexture2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, TextTexture2, [stage]);
       _this._precision = _this.stage.getOption("precision");
       return _this;
     }
@@ -8083,17 +8116,17 @@
             texParams[gl.TEXTURE_MAG_FILTER] = gl.NEAREST;
           }
           if (p) {
-            p.then(function() {
+            p.then((function() {
               _newArrowCheck(this, _this2);
               cb(null, Object.assign({
                 renderInfo: renderer.renderInfo,
                 throttle: false,
                 texParams
               }, this.stage.platform.getTextureOptionsForDrawingCanvas(canvas)));
-            }.bind(this)).catch(function(err) {
+            }).bind(this)).catch((function(err) {
               _newArrowCheck(this, _this2);
               cb(err);
-            }.bind(this));
+            }).bind(this));
           } else {
             cb(null, Object.assign({
               renderInfo: renderer.renderInfo,
@@ -8293,11 +8326,10 @@
   proto._fontBaselineRatio = 0;
   var SourceTexture = /* @__PURE__ */ function(_Texture) {
     _inherits(SourceTexture2, _Texture);
-    var _super = _createSuper(SourceTexture2);
     function SourceTexture2(stage) {
       var _this;
       _classCallCheck(this, SourceTexture2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, SourceTexture2, [stage]);
       _this._textureSource = void 0;
       return _this;
     }
@@ -8325,11 +8357,10 @@
   }(Texture);
   var Transition = /* @__PURE__ */ function(_EventEmitter) {
     _inherits(Transition2, _EventEmitter);
-    var _super = _createSuper(Transition2);
     function Transition2(manager, settings, element, property) {
       var _this;
       _classCallCheck(this, Transition2);
-      _this = _super.call(this);
+      _this = _callSuper(this, Transition2);
       _this.manager = manager;
       _this._settings = settings;
       _this._element = element;
@@ -8823,16 +8854,16 @@
         var _this = this;
         var prevItems = this._items;
         this._items = newItems;
-        var removed = prevItems.filter(function(item) {
+        var removed = prevItems.filter((function(item) {
           _newArrowCheck(this, _this);
           var m = item.marker;
           delete item.marker;
           return m;
-        }.bind(this));
-        var added = newItems.filter(function(item) {
+        }).bind(this));
+        var added = newItems.filter((function(item) {
           _newArrowCheck(this, _this);
           return prevItems.indexOf(item) === -1;
-        }.bind(this));
+        }).bind(this));
         if (removed.length || added.length) {
           this._refs = {};
           for (var i = 0, n = this._items.length; i < n; i++) {
@@ -8891,11 +8922,10 @@
   }();
   var ElementChildList = /* @__PURE__ */ function(_ObjectList) {
     _inherits(ElementChildList2, _ObjectList);
-    var _super = _createSuper(ElementChildList2);
     function ElementChildList2(element) {
       var _this;
       _classCallCheck(this, ElementChildList2);
-      _this = _super.call(this);
+      _this = _callSuper(this, ElementChildList2);
       _this._element = element;
       return _this;
     }
@@ -8936,10 +8966,10 @@
         for (var _i = 0, _n = added.length; _i < _n; _i++) {
           this._connectParent(added[_i]);
         }
-        var gc = function gc2(i2) {
+        var gc = (function gc2(i2) {
           _newArrowCheck(this, _this2);
           return i2.core;
-        }.bind(this);
+        }).bind(this);
         this._element.core.syncChildren(removed.map(gc), added.map(gc), order.map(gc));
       }
     }, {
@@ -9245,10 +9275,10 @@
           this.__core.shader.removeElement(this.__core);
         }
         if (this._texturizer) {
-          this.texturizer.filters.forEach(function(filter) {
+          this.texturizer.filters.forEach((function(filter) {
             _newArrowCheck(this, _this);
             return filter.removeElement(this.__core);
-          }.bind(this));
+          }).bind(this));
         }
         this.__enabled = false;
       }
@@ -9609,7 +9639,7 @@
       value: function _unsetTagsParent() {
         var _this2 = this;
         if (this.__tags) {
-          this.__tags.forEach(function(tag) {
+          this.__tags.forEach((function(tag) {
             _newArrowCheck(this, _this2);
             var p2 = this;
             while (p2 = p2.__parent) {
@@ -9619,7 +9649,7 @@
                 break;
               }
             }
-          }.bind(this));
+          }).bind(this));
         }
         var tags = null;
         var n = 0;
@@ -9637,12 +9667,11 @@
                     parentTreeTags.delete(comp);
                   });
                   if (p.__tagRoot) {
-                    return "break";
+                    return 1;
                   }
                 };
                 while (p = p.__parent) {
-                  var _ret = _loop();
-                  if (_ret === "break")
+                  if (_loop())
                     break;
                 }
               }
@@ -9655,7 +9684,7 @@
       value: function _setTagsParent() {
         var _this3 = this;
         if (this.__tags) {
-          this.__tags.forEach(function(tag) {
+          this.__tags.forEach((function(tag) {
             _newArrowCheck(this, _this3);
             var p = this;
             while (p = p.__parent) {
@@ -9672,11 +9701,11 @@
                 break;
               }
             }
-          }.bind(this));
+          }).bind(this));
         }
         if (this.__treeTags && this.__treeTags.size) {
           if (!this.__tagRoot) {
-            this.__treeTags.forEach(function(tagSet, tag) {
+            this.__treeTags.forEach((function(tagSet, tag) {
               _newArrowCheck(this, _this3);
               var p = this;
               var _loop2 = function _loop22() {
@@ -9697,7 +9726,7 @@
               while (!p.__tagRoot && (p = p.__parent)) {
                 _loop2();
               }
-            }.bind(this));
+            }).bind(this));
           }
         }
       }
@@ -9719,10 +9748,10 @@
       key: "setTags",
       value: function setTags(tags) {
         var _this4 = this;
-        tags = tags.reduce(function(acc, tag) {
+        tags = tags.reduce((function(acc, tag) {
           _newArrowCheck(this, _this4);
           return acc.concat(tag.split(" "));
-        }.bind(this), []);
+        }).bind(this), []);
         if (this.__ref) {
           tags.push(this.__ref);
         }
@@ -10017,10 +10046,10 @@
             }
             if (!missing) {
               settings.children = {};
-              childArray.forEach(function(child) {
+              childArray.forEach((function(child) {
                 _newArrowCheck(this, _this5);
                 settings.children[child.ref] = child;
-              }.bind(this));
+              }).bind(this));
             } else {
               settings.children = childArray;
             }
@@ -10752,17 +10781,17 @@
       set: function set2(object) {
         var _this6 = this;
         var keys = Object.keys(object);
-        keys.forEach(function(property) {
+        keys.forEach((function(property) {
           _newArrowCheck(this, _this6);
           this.transition(property, object[property]);
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "smooth",
       set: function set2(object) {
         var _this7 = this;
         var keys = Object.keys(object);
-        keys.forEach(function(property) {
+        keys.forEach((function(property) {
           _newArrowCheck(this, _this7);
           var value = object[property];
           if (Array.isArray(value)) {
@@ -10770,7 +10799,7 @@
           } else {
             this.setSmooth(property, value);
           }
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "fastForward",
@@ -10860,6 +10889,14 @@
       },
       set: function set2(v) {
         this.__core.flexItem = v;
+      }
+    }, {
+      key: "ignoreRTL",
+      get: function get() {
+        return this.__core.ignoreRTL;
+      },
+      set: function set2(v) {
+        this.__core.ignoreRTL = v;
       }
     }, {
       key: "toJSON",
@@ -11256,17 +11293,16 @@
         var type = this._type;
         var router = /* @__PURE__ */ function(_type) {
           _inherits(StateMachineRouter, _type);
-          var _super = _createSuper(StateMachineRouter);
           function StateMachineRouter() {
             var _this;
             _classCallCheck(this, StateMachineRouter);
-            _this = _super.apply(this, arguments);
+            _this = _callSuper(this, StateMachineRouter, arguments);
             if (!_this.constructor.hasOwnProperty("_isRouter")) {
               throw new Error("You need to extend ".concat(type.name, ".original instead of ").concat(type.name, "."));
             }
             return _this;
           }
-          return StateMachineRouter;
+          return _createClass(StateMachineRouter);
         }(type);
         router._isRouter = true;
         router.prototype._routedType = type;
@@ -11291,10 +11327,10 @@
       value: function _addStateMemberDelegatorsToRouter() {
         var _this2 = this;
         var members = this._getAllMemberNames();
-        members.forEach(function(member) {
+        members.forEach((function(member) {
           _newArrowCheck(this, _this2);
           this._addMemberRouter(member);
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "_addMemberRouter",
@@ -11303,7 +11339,7 @@
         var statePaths = Object.keys(this._stateMap);
         var descriptors = [];
         var aliases = [];
-        statePaths.forEach(function(statePath, index) {
+        statePaths.forEach((function(statePath, index) {
           _newArrowCheck(this, _this3);
           var state = this._stateMap[statePath];
           var descriptor = this._getDescriptor(state, member);
@@ -11318,9 +11354,9 @@
             descriptors[index] = null;
             aliases[index] = null;
           }
-        }.bind(this));
+        }).bind(this));
         var type = void 0;
-        descriptors.forEach(function(descriptor) {
+        descriptors.forEach((function(descriptor) {
           _newArrowCheck(this, _this3);
           if (descriptor) {
             var descType = this._getDescriptorType(descriptor);
@@ -11330,7 +11366,7 @@
             }
             type = descType;
           }
-        }.bind(this));
+        }).bind(this));
         switch (type) {
           case "method":
             this._addMethodRouter(member, descriptors, aliases);
@@ -11347,10 +11383,10 @@
       key: "_getDescriptor",
       value: function _getDescriptor(state, member) {
         var _this4 = this;
-        var isValid = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : function() {
+        var isValid = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : (function() {
           _newArrowCheck(this, _this4);
           return true;
-        }.bind(this);
+        }).bind(this);
         var type = state;
         var curState = state;
         do {
@@ -11435,14 +11471,14 @@
         var _this5 = this;
         var statePaths = Object.keys(this._stateMap);
         var aliases = [];
-        statePaths.forEach(function(statePath, index) {
+        statePaths.forEach((function(statePath, index) {
           var _this6 = this;
           _newArrowCheck(this, _this5);
           var state = this._stateMap[statePath];
-          var descriptor = this._getDescriptor(state, member, function(descriptor2) {
+          var descriptor = this._getDescriptor(state, member, (function(descriptor2) {
             _newArrowCheck(this, _this6);
             return descriptor2.get;
-          }.bind(this));
+          }).bind(this));
           if (descriptor) {
             var alias2 = StateMachineType2.getStateMemberAlias(descriptor._source.__path, member);
             aliases[index] = alias2;
@@ -11452,7 +11488,7 @@
           } else {
             aliases[index] = null;
           }
-        }.bind(this));
+        }).bind(this));
         var code = ["//@ sourceURL=StateMachineRouter.js", "var i = this._stateIndex;"];
         var cur = aliases[0];
         for (var i = 1, n = aliases.length; i < n; i++) {
@@ -11481,14 +11517,14 @@
         var _this7 = this;
         var statePaths = Object.keys(this._stateMap);
         var aliases = [];
-        statePaths.forEach(function(statePath, index) {
+        statePaths.forEach((function(statePath, index) {
           var _this8 = this;
           _newArrowCheck(this, _this7);
           var state = this._stateMap[statePath];
-          var descriptor = this._getDescriptor(state, member, function(descriptor2) {
+          var descriptor = this._getDescriptor(state, member, (function(descriptor2) {
             _newArrowCheck(this, _this8);
             return descriptor2.set;
-          }.bind(this));
+          }).bind(this));
           if (descriptor) {
             var alias2 = StateMachineType2.getStateMemberAlias(descriptor._source.__path, member);
             aliases[index] = alias2;
@@ -11498,7 +11534,7 @@
           } else {
             aliases[index] = null;
           }
-        }.bind(this));
+        }).bind(this));
         var code = ["//@ sourceURL=StateMachineRouter.js", "var i = this._stateIndex;"];
         var cur = aliases[0];
         for (var i = 1, n = aliases.length; i < n; i++) {
@@ -11528,7 +11564,7 @@
         var stateMap = this._stateMap;
         var map = Object.keys(stateMap);
         var members = /* @__PURE__ */ new Set();
-        map.forEach(function(statePath) {
+        map.forEach((function(statePath) {
           var _this10 = this;
           _newArrowCheck(this, _this9);
           if (statePath === "") {
@@ -11536,11 +11572,11 @@
           }
           var state = stateMap[statePath];
           var names = this._getStateMemberNames(state);
-          names.forEach(function(name) {
+          names.forEach((function(name) {
             _newArrowCheck(this, _this10);
             members.add(name);
-          }.bind(this));
-        }.bind(this));
+          }).bind(this));
+        }).bind(this));
         return _toConsumableArray(members);
       }
     }, {
@@ -11552,10 +11588,10 @@
         var isRoot = this._type === state;
         do {
           var names = this._getStateMemberNamesForType(type);
-          names.forEach(function(name) {
+          names.forEach((function(name) {
             _newArrowCheck(this, _this11);
             members.add(name);
-          }.bind(this));
+          }).bind(this));
           type = Object.getPrototypeOf(type);
         } while (type && type.prototype && (!type.hasOwnProperty("__state") || isRoot));
         return members;
@@ -11565,10 +11601,10 @@
       value: function _getStateMemberNamesForType(type) {
         var _this12 = this;
         var memberNames = Object.getOwnPropertyNames(type.prototype);
-        return memberNames.filter(function(memberName) {
+        return memberNames.filter((function(memberName) {
           _newArrowCheck(this, _this12);
           return memberName !== "constructor" && !StateMachineType2._isStateLocalMember(memberName);
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "getStateByPath",
@@ -11618,11 +11654,11 @@
           var isInheritedFromParent = parentState && parentState._states === states;
           if (!isInheritedFromParent) {
             var subStates = state._states();
-            subStates.forEach(function(subState) {
+            subStates.forEach((function(subState) {
               _newArrowCheck(this, _this13);
               var stateName = StateMachineType2._getStateName(subState);
               this._addState(subState, state, stateName, stateMap);
-            }.bind(this));
+            }).bind(this));
           }
         }
       }
@@ -11677,11 +11713,10 @@
   }();
   var Component = /* @__PURE__ */ function(_Element) {
     _inherits(Component2, _Element);
-    var _super = _createSuper(Component2);
     function Component2(stage, properties) {
       var _this;
       _classCallCheck(this, Component2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, Component2, [stage]);
       _this.tagRoot = true;
       if (Utils$1.isObjectLiteral(properties)) {
         Object.assign(_assertThisInitialized(_this), properties);
@@ -11729,13 +11764,13 @@
         var obj = targetObj;
         var prop = targetProp;
         var propDependencies = Array.isArray(propObj.__name) ? propObj.__name : [propObj.__name];
-        var _loop = function _loop2(i2) {
+        var _loop = function _loop2() {
           var _this3 = this;
-          var propName = propDependencies[i2];
-          var func = propObj.__func ? propObj.__func : function(context) {
+          var propName = propDependencies[i];
+          var func = propObj.__func ? propObj.__func : (function(context) {
             _newArrowCheck(this, _this3);
             return context[propName];
-          }.bind(this);
+          }).bind(this);
           if (!_this2.hasOwnProperty(propName)) {
             _this2["__prop_bindings_".concat(propName)] = [{
               __obj: obj,
@@ -11743,7 +11778,7 @@
               __func: func
             }];
             Object.defineProperty(_this2, propName, {
-              set: function set2(value) {
+              set: (function set2(value) {
                 _newArrowCheck(this, _this3);
                 _this2["__prop_".concat(propName)] = value;
                 var _iterator = _createForOfIteratorHelper(_this2["__prop_bindings_".concat(propName)]), _step;
@@ -11757,11 +11792,11 @@
                 } finally {
                   _iterator.f();
                 }
-              }.bind(this),
-              get: function get() {
+              }).bind(this),
+              get: (function get() {
                 _newArrowCheck(this, _this3);
                 return _this2["__prop_".concat(propName)];
-              }.bind(this)
+              }).bind(this)
             });
           } else {
             _this2["__prop_bindings_".concat(propName)].push({
@@ -11772,7 +11807,7 @@
           }
         };
         for (var i = 0; i < propDependencies.length; i++) {
-          _loop(i);
+          _loop();
         }
       }
     }, {
@@ -12131,7 +12166,7 @@
         var store = context.store;
         var loc = context.loc;
         var keys = Object.keys(obj);
-        keys.forEach(function(key) {
+        keys.forEach((function(key) {
           _newArrowCheck(this, _this4);
           var value = obj[key];
           if (Utils$1.isUcChar(key.charCodeAt(0))) {
@@ -12195,7 +12230,7 @@
               }
             }
           }
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "parseTemplatePropRec",
@@ -12204,7 +12239,7 @@
         var store = context.store;
         var loc = context.loc;
         var keys = Object.keys(obj);
-        keys.forEach(function(key) {
+        keys.forEach((function(key) {
           _newArrowCheck(this, _this5);
           if (key !== "type") {
             var value = obj[key];
@@ -12222,7 +12257,7 @@
               loc.push("".concat(cursor, '["').concat(key, '"] = ').concat(JSON.stringify(value)));
             }
           }
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "parsePropertyBindings",
@@ -12231,7 +12266,7 @@
         var store = context.store;
         var loc = context.loc;
         var keys = Object.keys(obj);
-        keys.forEach(function(key) {
+        keys.forEach((function(key) {
           _newArrowCheck(this, _this6);
           if (key !== "type") {
             var value = obj[key];
@@ -12240,7 +12275,7 @@
               loc.push("element.__bindProperty(store[".concat(store.length - 1, "], ").concat(cursor, ', "').concat(key, '")'));
             }
           }
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "_template",
@@ -12339,11 +12374,10 @@
   }();
   var WebGLCoreQuadList = /* @__PURE__ */ function(_CoreQuadList) {
     _inherits(WebGLCoreQuadList2, _CoreQuadList);
-    var _super = _createSuper(WebGLCoreQuadList2);
     function WebGLCoreQuadList2(ctx) {
       var _this;
       _classCallCheck(this, WebGLCoreQuadList2);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, WebGLCoreQuadList2, [ctx]);
       var byteSize = ctx.stage.getOption("bufferMemory");
       _this.dataLength = 0;
       _this.data = new ArrayBuffer(byteSize);
@@ -12449,11 +12483,10 @@
   }();
   var WebGLCoreQuadOperation = /* @__PURE__ */ function(_CoreQuadOperation) {
     _inherits(WebGLCoreQuadOperation2, _CoreQuadOperation);
-    var _super = _createSuper(WebGLCoreQuadOperation2);
     function WebGLCoreQuadOperation2(ctx, shader, shaderOwner, renderTextureInfo, scissor, index) {
       var _this;
       _classCallCheck(this, WebGLCoreQuadOperation2);
-      _this = _super.call(this, ctx, shader, shaderOwner, renderTextureInfo, scissor, index);
+      _this = _callSuper(this, WebGLCoreQuadOperation2, [ctx, shader, shaderOwner, renderTextureInfo, scissor, index]);
       _this.extraAttribsDataByteOffset = 0;
       return _this;
     }
@@ -12571,11 +12604,10 @@
   }();
   var WebGLCoreRenderExecutor = /* @__PURE__ */ function(_CoreRenderExecutor) {
     _inherits(WebGLCoreRenderExecutor2, _CoreRenderExecutor);
-    var _super = _createSuper(WebGLCoreRenderExecutor2);
     function WebGLCoreRenderExecutor2(ctx) {
       var _this;
       _classCallCheck(this, WebGLCoreRenderExecutor2);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, WebGLCoreRenderExecutor2, [ctx]);
       _this.gl = _this.ctx.stage.gl;
       _this.init();
       return _this;
@@ -12961,10 +12993,10 @@
           console.error("[Lightning]", this.constructor.name, "Type: " + (type === this.gl.VERTEX_SHADER ? "vertex shader" : "fragment shader"));
           console.error("[Lightning]", this.gl.getShaderInfoLog(shader));
           var idx = 0;
-          console.error("[Lightning]", "========== source ==========\n" + src.split("\n").map(function(line) {
+          console.error("[Lightning]", "========== source ==========\n" + src.split("\n").map((function(line) {
             _newArrowCheck(this, _this);
             return "" + ++idx + ": " + line;
-          }.bind(this)).join("\n"));
+          }).bind(this)).join("\n"));
           return null;
         }
         return shader;
@@ -13065,11 +13097,10 @@
   }();
   var WebGLShader = /* @__PURE__ */ function(_Shader) {
     _inherits(WebGLShader2, _Shader);
-    var _super = _createSuper(WebGLShader2);
     function WebGLShader2(ctx) {
       var _this;
       _classCallCheck(this, WebGLShader2);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, WebGLShader2, [ctx]);
       var stage = ctx.stage;
       _this._program = stage.renderer.shaderPrograms.get(_this.constructor);
       if (!_this._program) {
@@ -13202,10 +13233,9 @@
   }(Shader);
   var DefaultShader$1 = /* @__PURE__ */ function(_WebGLShader) {
     _inherits(DefaultShader2, _WebGLShader);
-    var _super = _createSuper(DefaultShader2);
     function DefaultShader2() {
       _classCallCheck(this, DefaultShader2);
-      return _super.apply(this, arguments);
+      return _callSuper(this, DefaultShader2, arguments);
     }
     _createClass(DefaultShader2, [{
       key: "enableAttribs",
@@ -13333,11 +13363,10 @@
   }();
   var WebGLRenderer = /* @__PURE__ */ function(_Renderer) {
     _inherits(WebGLRenderer2, _Renderer);
-    var _super = _createSuper(WebGLRenderer2);
     function WebGLRenderer2(stage) {
       var _this;
       _classCallCheck(this, WebGLRenderer2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, WebGLRenderer2, [stage]);
       _this.shaderPrograms = /* @__PURE__ */ new Map();
       _this._compressedTextureExtensions = {
         astc: stage.gl.getExtension("WEBGL_compressed_texture_astc"),
@@ -13356,10 +13385,10 @@
       key: "destroy",
       value: function destroy() {
         var _this2 = this;
-        this.shaderPrograms.forEach(function(shaderProgram) {
+        this.shaderPrograms.forEach((function(shaderProgram) {
           _newArrowCheck(this, _this2);
           return shaderProgram.destroy();
-        }.bind(this));
+        }).bind(this));
         this.shaderPrograms = null;
         this._compressedTextureExtensions = null;
         delete this.shaderPrograms;
@@ -13505,11 +13534,11 @@
           texParams[gl.TEXTURE_WRAP_S] = gl.CLAMP_TO_EDGE;
         if (!texParams[gl.TEXTURE_WRAP_T])
           texParams[gl.TEXTURE_WRAP_T] = gl.CLAMP_TO_EDGE;
-        Object.keys(texParams).forEach(function(key) {
+        Object.keys(texParams).forEach((function(key) {
           _newArrowCheck(this, _this3);
           var value = texParams[key];
           gl.texParameteri(gl.TEXTURE_2D, parseInt(key), value);
-        }.bind(this));
+        }).bind(this));
         if (compressed) {
           this.stage.platform.uploadCompressedGlTexture(gl, textureSource, source);
           return glTexture;
@@ -13623,11 +13652,10 @@
   }(Renderer);
   var C2dCoreQuadList = /* @__PURE__ */ function(_CoreQuadList) {
     _inherits(C2dCoreQuadList2, _CoreQuadList);
-    var _super = _createSuper(C2dCoreQuadList2);
     function C2dCoreQuadList2(ctx) {
       var _this;
       _classCallCheck(this, C2dCoreQuadList2);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, C2dCoreQuadList2, [ctx]);
       _this.renderContexts = [];
       _this.modes = [];
       return _this;
@@ -13675,10 +13703,9 @@
   }(CoreQuadList);
   var C2dCoreQuadOperation = /* @__PURE__ */ function(_CoreQuadOperation) {
     _inherits(C2dCoreQuadOperation2, _CoreQuadOperation);
-    var _super = _createSuper(C2dCoreQuadOperation2);
     function C2dCoreQuadOperation2() {
       _classCallCheck(this, C2dCoreQuadOperation2);
-      return _super.apply(this, arguments);
+      return _callSuper(this, C2dCoreQuadOperation2, arguments);
     }
     _createClass(C2dCoreQuadOperation2, [{
       key: "getRenderContext",
@@ -13700,10 +13727,9 @@
   }(CoreQuadOperation);
   var C2dCoreRenderExecutor = /* @__PURE__ */ function(_CoreRenderExecutor) {
     _inherits(C2dCoreRenderExecutor2, _CoreRenderExecutor);
-    var _super = _createSuper(C2dCoreRenderExecutor2);
     function C2dCoreRenderExecutor2() {
       _classCallCheck(this, C2dCoreRenderExecutor2);
-      return _super.apply(this, arguments);
+      return _callSuper(this, C2dCoreRenderExecutor2, arguments);
     }
     _createClass(C2dCoreRenderExecutor2, [{
       key: "init",
@@ -13792,10 +13818,9 @@
   }(CoreRenderExecutor);
   var C2dShader = /* @__PURE__ */ function(_Shader) {
     _inherits(C2dShader2, _Shader);
-    var _super = _createSuper(C2dShader2);
     function C2dShader2() {
       _classCallCheck(this, C2dShader2);
-      return _super.apply(this, arguments);
+      return _callSuper(this, C2dShader2, arguments);
     }
     _createClass(C2dShader2, [{
       key: "beforeDraw",
@@ -13814,11 +13839,10 @@
   }(Shader);
   var DefaultShader = /* @__PURE__ */ function(_C2dShader) {
     _inherits(DefaultShader2, _C2dShader);
-    var _super = _createSuper(DefaultShader2);
     function DefaultShader2(ctx) {
       var _this;
       _classCallCheck(this, DefaultShader2);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, DefaultShader2, [ctx]);
       _this._rectangleTexture = ctx.stage.rectangleTexture.source.nativeTexture;
       _this._tintManager = _this.ctx.stage.renderer.tintManager;
       return _this;
@@ -14033,7 +14057,7 @@
         var aggressive = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : false;
         var frame = this.stage.frameCounter;
         var delta = 0;
-        this._cachedNativeTextures.forEach(function(texture) {
+        this._cachedNativeTextures.forEach((function(texture) {
           _newArrowCheck(this, _this);
           var cache = this._getCache(texture);
           if (aggressive) {
@@ -14045,7 +14069,7 @@
             cache.releaseBlancoTextures();
             delta += cache.memoryUsage - before;
           }
-        }.bind(this));
+        }).bind(this));
         if (aggressive) {
           this._cachedNativeTextures.clear();
         }
@@ -14112,7 +14136,7 @@
         var _this2 = this;
         if (this._lastCleanupFrame !== frame) {
           this._blancoTextures = [];
-          this._colors.forEach(function(item, color) {
+          this._colors.forEach((function(item, color) {
             _newArrowCheck(this, _this2);
             if (item.lf < frame - 1) {
               if (item.tx) {
@@ -14120,7 +14144,7 @@
               }
               this._colors.delete(color);
             }
-          }.bind(this));
+          }).bind(this));
           this._lastCleanupFrame = frame;
         }
       }
@@ -14138,11 +14162,10 @@
   }();
   var C2dRenderer = /* @__PURE__ */ function(_Renderer) {
     _inherits(C2dRenderer2, _Renderer);
-    var _super = _createSuper(C2dRenderer2);
     function C2dRenderer2(stage) {
       var _this;
       _classCallCheck(this, C2dRenderer2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, C2dRenderer2, [stage]);
       _this.tintManager = new C2dTextureTintManager(stage);
       _this.setupC2d(_this.stage.c2d.canvas);
       return _this;
@@ -14256,10 +14279,9 @@
   }(Renderer);
   var SparkShader = /* @__PURE__ */ function(_WebGLShader) {
     _inherits(SparkShader2, _WebGLShader);
-    var _super = _createSuper(SparkShader2);
     function SparkShader2() {
       _classCallCheck(this, SparkShader2);
-      return _super.apply(this, arguments);
+      return _callSuper(this, SparkShader2, arguments);
     }
     _createClass(SparkShader2, [{
       key: "enableAttribs",
@@ -14336,10 +14358,9 @@
   SparkShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    void main(void){\n        gl_FragColor = texture2D(uSampler, vTextureCoord) * vColor;\n    }\n";
   var SparkRenderer = /* @__PURE__ */ function(_WebGLRenderer) {
     _inherits(SparkRenderer2, _WebGLRenderer);
-    var _super = _createSuper(SparkRenderer2);
     function SparkRenderer2(stage) {
       _classCallCheck(this, SparkRenderer2);
-      return _super.call(this, stage);
+      return _callSuper(this, SparkRenderer2, [stage]);
     }
     _createClass(SparkRenderer2, [{
       key: "_createDefaultShader",
@@ -14392,7 +14413,7 @@
             protocol: window.location.protocol
           }
         });
-        this._worker.onmessage = function(e) {
+        this._worker.onmessage = (function(e) {
           _newArrowCheck(this, _this);
           if (e.data && e.data.id) {
             var id = e.data.id;
@@ -14405,7 +14426,7 @@
               }
             }
           }
-        }.bind(this);
+        }).bind(this);
       }
     }, {
       key: "create",
@@ -14731,7 +14752,7 @@
         }
         if (!this.stage.ctx.hasRenderUpdates()) {
           this.stopLoop();
-          this._loopHandler = setInterval(function() {
+          this._loopHandler = setInterval((function() {
             _newArrowCheck(this, _this);
             this.stage.updateFrame();
             this.stage.idleFrame();
@@ -14739,7 +14760,7 @@
               clearInterval(this._loopHandler);
               this.startLoop();
             }
-          }.bind(this), 1e3 / 60);
+          }).bind(this), 1e3 / 60);
         } else {
           this._idleLoopCounter = 0;
         }
@@ -14823,24 +14844,24 @@
               return this.pixelHeight;
             }
           };
-          var props = function props2(obj) {
+          var props = (function props2(obj) {
             _newArrowCheck(this, _this2);
             var p = [];
             for (var v in obj) {
               p.push(obj[v]);
             }
             return p;
-          }.bind(this);
-          var formats = Object.values(self2.stage.renderer.getCompressedTextureExtensions()).filter(function(obj) {
+          }).bind(this);
+          var formats = Object.values(self2.stage.renderer.getCompressedTextureExtensions()).filter((function(obj) {
             _newArrowCheck(this, _this2);
             return obj != null;
-          }.bind(this)).map(function(obj) {
+          }).bind(this)).map((function(obj) {
             _newArrowCheck(this, _this2);
             return props(obj);
-          }.bind(this)).reduce(function(prev, current) {
+          }).bind(this)).reduce((function(prev, current) {
             _newArrowCheck(this, _this2);
             return prev.concat(current);
-          }.bind(this));
+          }).bind(this));
           if (!formats.includes(data.glInternalFormat)) {
             console.warn("[Lightning] Unrecognized texture extension format:", src, data.glInternalFormat, self2.stage.renderer.getCompressedTextureExtensions());
           }
@@ -15013,7 +15034,7 @@
     }, {
       key: "getHrTime",
       value: function getHrTime() {
-        return window.performance ? window.performance.now() : new Date().getTime();
+        return window.performance ? window.performance.now() : (/* @__PURE__ */ new Date()).getTime();
       }
     }, {
       key: "getDrawingCanvas",
@@ -15035,20 +15056,20 @@
       key: "registerKeydownHandler",
       value: function registerKeydownHandler(keyhandler) {
         var _this3 = this;
-        this._keydownListener = function(e) {
+        this._keydownListener = (function(e) {
           _newArrowCheck(this, _this3);
           keyhandler(e);
-        }.bind(this);
+        }).bind(this);
         window.addEventListener("keydown", this._keydownListener);
       }
     }, {
       key: "registerKeyupHandler",
       value: function registerKeyupHandler(keyhandler) {
         var _this4 = this;
-        this._keyupListener = function(e) {
+        this._keyupListener = (function(e) {
           _newArrowCheck(this, _this4);
           keyhandler(e);
-        }.bind(this);
+        }).bind(this);
         window.addEventListener("keyup", this._keyupListener);
       }
     }, {
@@ -15065,10 +15086,10 @@
       key: "registerClickHandler",
       value: function registerClickHandler(clickHandler) {
         var _this5 = this;
-        this._clickListener = function(e) {
+        this._clickListener = (function(e) {
           _newArrowCheck(this, _this5);
           clickHandler(e);
-        }.bind(this);
+        }).bind(this);
         window.addEventListener("mousedown", this._clickListener);
       }
     }, {
@@ -15082,10 +15103,10 @@
       key: "registerHoverHandler",
       value: function registerHoverHandler(hoverHandler) {
         var _this6 = this;
-        this._hoverListener = function(e) {
+        this._hoverListener = (function(e) {
           _newArrowCheck(this, _this6);
           hoverHandler(e);
-        }.bind(this);
+        }).bind(this);
         window.addEventListener("mousemove", this._hoverListener);
       }
     }, {
@@ -15099,10 +15120,10 @@
       key: "registerScrollWheelHandler",
       value: function registerScrollWheelHandler(_registerScrollWheelHandler) {
         var _this7 = this;
-        this._scrollWheelListener = function(e) {
+        this._scrollWheelListener = (function(e) {
           _newArrowCheck(this, _this7);
           _registerScrollWheelHandler(e);
-        }.bind(this);
+        }).bind(this);
         window.addEventListener("wheel", this._scrollWheelListener);
       }
     }, {
@@ -15116,13 +15137,13 @@
       key: "_registerVisibilityChangeHandler",
       value: function _registerVisibilityChangeHandler() {
         var _this8 = this;
-        this._visibilityChangeHandler = function() {
+        this._visibilityChangeHandler = (function() {
           _newArrowCheck(this, _this8);
           if (document.visibilityState === "visible") {
             this.stage.root.core.setHasRenderUpdates(2);
             this.stage.renderFrame();
           }
-        }.bind(this);
+        }).bind(this);
         document.addEventListener("visibilitychange", this._visibilityChangeHandler);
       }
     }, {
@@ -15462,69 +15483,69 @@
       key: "_migrateBuffers",
       value: function _migrateBuffers(t, s) {
         var _this = this;
-        s._buffers.forEach(function(framebuffer, target) {
+        s._buffers.forEach((function(framebuffer, target) {
           _newArrowCheck(this, _this);
           if (t._buffers.get(target) !== framebuffer) {
             this._gl._bindBuffer(target, framebuffer);
           }
-        }.bind(this));
-        t._buffers.forEach(function(buffer, target) {
+        }).bind(this));
+        t._buffers.forEach((function(buffer, target) {
           _newArrowCheck(this, _this);
           var b = s._buffers.get(target);
           if (b === void 0) {
             this._gl._bindBuffer(target, null);
           }
-        }.bind(this));
+        }).bind(this));
         return s._buffers.get(this._gl.ARRAY_BUFFER) !== t._buffers.get(this._gl.ARRAY_BUFFER);
       }
     }, {
       key: "_migrateFramebuffers",
       value: function _migrateFramebuffers(t, s) {
         var _this2 = this;
-        s._framebuffers.forEach(function(framebuffer, target) {
+        s._framebuffers.forEach((function(framebuffer, target) {
           _newArrowCheck(this, _this2);
           if (t._framebuffers.get(target) !== framebuffer) {
             this._gl._bindFramebuffer(target, framebuffer);
           }
-        }.bind(this));
-        t._framebuffers.forEach(function(framebuffer, target) {
+        }).bind(this));
+        t._framebuffers.forEach((function(framebuffer, target) {
           _newArrowCheck(this, _this2);
           var fb = s._framebuffers.get(target);
           if (fb === void 0) {
             this._gl._bindFramebuffer(target, null);
           }
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "_migrateRenderbuffers",
       value: function _migrateRenderbuffers(t, s) {
         var _this3 = this;
-        s._renderbuffers.forEach(function(renderbuffer, target) {
+        s._renderbuffers.forEach((function(renderbuffer, target) {
           _newArrowCheck(this, _this3);
           if (t._renderbuffers.get(target) !== renderbuffer) {
             this._gl._bindRenderbuffer(target, renderbuffer);
           }
-        }.bind(this));
-        t._renderbuffers.forEach(function(renderbuffer, target) {
+        }).bind(this));
+        t._renderbuffers.forEach((function(renderbuffer, target) {
           _newArrowCheck(this, _this3);
           var fb = s._renderbuffers.get(target);
           if (fb === void 0) {
             this._gl._bindRenderbuffer(target, null);
           }
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "_migrateAttributes",
       value: function _migrateAttributes(t, s, buffersChanged) {
         var _this4 = this;
         if (!buffersChanged) {
-          t._vertexAttribs.forEach(function(attrib, index) {
+          t._vertexAttribs.forEach((function(attrib, index) {
             _newArrowCheck(this, _this4);
             if (!s._vertexAttribs[index]) {
               this._gl._disableVertexAttribArray(index);
             }
-          }.bind(this));
-          s._vertexAttribs.forEach(function(attrib, index) {
+          }).bind(this));
+          s._vertexAttribs.forEach((function(attrib, index) {
             _newArrowCheck(this, _this4);
             this._gl._vertexAttribPointer(index, attrib[0], attrib[1], attrib[2], attrib[4]);
             if (attrib[5]) {
@@ -15532,9 +15553,9 @@
             } else {
               this._gl._disableVertexAttribArray(index);
             }
-          }.bind(this));
+          }).bind(this));
         } else {
-          s._vertexAttribs.forEach(function(attrib, index) {
+          s._vertexAttribs.forEach((function(attrib, index) {
             _newArrowCheck(this, _this4);
             if (attrib[0]) {
               this._gl._vertexAttribPointer(index, attrib[0], attrib[1], attrib[2], attrib[3], attrib[4]);
@@ -15542,7 +15563,7 @@
             if (attrib[5]) {
               this._gl._enableVertexAttribArray(index);
             }
-          }.bind(this));
+          }).bind(this));
         }
       }
     }, {
@@ -15550,7 +15571,7 @@
       value: function _migrateSettings(t, s) {
         var _this5 = this;
         var defaults = this.constructor.getDefaultSettings();
-        t._settings.forEach(function(value, func) {
+        t._settings.forEach((function(value, func) {
           _newArrowCheck(this, _this5);
           var name = func.name || func.xname;
           if (!s._settings.has(func)) {
@@ -15561,20 +15582,20 @@
             s._settings.set(func, args);
             func.apply(this._gl, args);
           }
-        }.bind(this));
-        s._settings.forEach(function(value, func) {
+        }).bind(this));
+        s._settings.forEach((function(value, func) {
           _newArrowCheck(this, _this5);
           var tValue = t._settings.get(func);
           if (!tValue || !Utils.equalValues(tValue, value)) {
             func.apply(this._gl, value);
           }
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "_migrateFlags",
       value: function _migrateFlags(t, s) {
         var _this6 = this;
-        t._nonDefaultFlags.forEach(function(setting) {
+        t._nonDefaultFlags.forEach((function(setting) {
           _newArrowCheck(this, _this6);
           if (!s._nonDefaultFlags.has(setting)) {
             if (this._getDefaultFlag(setting)) {
@@ -15583,8 +15604,8 @@
               this._gl._disable(setting);
             }
           }
-        }.bind(this));
-        s._nonDefaultFlags.forEach(function(setting) {
+        }).bind(this));
+        s._nonDefaultFlags.forEach((function(setting) {
           _newArrowCheck(this, _this6);
           if (!t._nonDefaultFlags.has(setting)) {
             if (this._getDefaultFlag(setting)) {
@@ -15593,7 +15614,7 @@
               this._gl._enable(setting);
             }
           }
-        }.bind(this));
+        }).bind(this));
       }
     }], [{
       key: "getDefaultSettings",
@@ -16105,7 +16126,7 @@
         var id = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "default";
         var names = Object.getOwnPropertyNames(WebGLStateManager2.prototype);
         gl.__proto__;
-        names.forEach(function(name) {
+        names.forEach((function(name) {
           _newArrowCheck(this, _this7);
           if (name !== "constructor") {
             var method = WebGLStateManager2.prototype[name];
@@ -16122,7 +16143,7 @@
               gl[name] = method;
             }
           }
-        }.bind(this));
+        }).bind(this));
         WebGLStateManager2.prototype._initStateManager.call(gl, id);
         return gl;
       }
@@ -16250,12 +16271,12 @@
       key: "_cleanupLookupMap",
       value: function _cleanupLookupMap() {
         var _this = this;
-        this.textureSourceHashmap.forEach(function(textureSource, lookupId) {
+        this.textureSourceHashmap.forEach((function(textureSource, lookupId) {
           _newArrowCheck(this, _this);
           if (!(textureSource.isLoaded() || textureSource.isLoading()) && !textureSource.isUsed()) {
             this.textureSourceHashmap.delete(lookupId);
           }
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "freeTextureSource",
@@ -16290,10 +16311,10 @@
       var _this = this;
       _classCallCheck(this, TextureThrottler2);
       this.stage = stage;
-      this.genericCancelCb = function(textureSource) {
+      this.genericCancelCb = (function(textureSource) {
         _newArrowCheck(this, _this);
         this._remove(textureSource);
-      }.bind(this);
+      }).bind(this);
       this._sources = [];
       this._data = [];
     }
@@ -16369,10 +16390,10 @@
       key: "destroy",
       value: function destroy() {
         var _this = this;
-        this._renderTexturePool.forEach(function(texture) {
+        this._renderTexturePool.forEach((function(texture) {
           _newArrowCheck(this, _this);
           return this._freeRenderTexture(texture);
-        }.bind(this));
+        }).bind(this));
         this._usedMemory = 0;
         this.stage = null;
         this.root = null;
@@ -16501,14 +16522,14 @@
         var _this2 = this;
         var maxAge = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : 60;
         var limit = this.stage.frameCounter - maxAge;
-        this._renderTexturePool = this._renderTexturePool.filter(function(texture) {
+        this._renderTexturePool = this._renderTexturePool.filter((function(texture) {
           _newArrowCheck(this, _this2);
           if (texture.f <= limit) {
             this._freeRenderTexture(texture);
             return false;
           }
           return true;
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "_createRenderTexture",
@@ -16580,10 +16601,10 @@
       var _this = this;
       _classCallCheck(this, TransitionManager2);
       this.stage = stage;
-      this.stage.on("frameStart", function() {
+      this.stage.on("frameStart", (function() {
         _newArrowCheck(this, _this);
         return this.progress();
-      }.bind(this));
+      }).bind(this));
       this.active = /* @__PURE__ */ new Set();
       this.defaultTransitionSettings = new TransitionSettings(this.stage);
     }
@@ -16601,10 +16622,10 @@
             }
           });
           if (filter) {
-            this.active = new Set(_toConsumableArray(this.active).filter(function(t) {
+            this.active = new Set(_toConsumableArray(this.active).filter((function(t) {
               _newArrowCheck(this, _this2);
               return t.isRunning();
-            }.bind(this)));
+            }).bind(this)));
           }
         }
       }
@@ -17078,11 +17099,11 @@
           v = [v];
         }
         this._props = [];
-        v.forEach(function(prop) {
+        v.forEach((function(prop) {
           _newArrowCheck(this, _this);
           this._props.push(prop);
           this._propSetters.push(Element.getSetter(prop));
-        }.bind(this));
+        }).bind(this));
       }
     }, {
       key: "property",
@@ -17192,11 +17213,10 @@
   };
   var Animation = /* @__PURE__ */ function(_EventEmitter) {
     _inherits(Animation2, _EventEmitter);
-    var _super = _createSuper(Animation2);
     function Animation2(manager, settings, element) {
       var _this;
       _classCallCheck(this, Animation2);
-      _this = _super.call(this);
+      _this = _callSuper(this, Animation2);
       _this.manager = manager;
       _this._settings = settings;
       _this._element = element;
@@ -17566,10 +17586,10 @@
       var _this = this;
       _classCallCheck(this, AnimationManager2);
       this.stage = stage;
-      this.stage.on("frameStart", function() {
+      this.stage.on("frameStart", (function() {
         _newArrowCheck(this, _this);
         return this.progress();
-      }.bind(this));
+      }).bind(this));
       this.active = /* @__PURE__ */ new Set();
     }
     _createClass(AnimationManager2, [{
@@ -17587,10 +17607,10 @@
             }
           });
           if (filter) {
-            this.active = new Set(_toConsumableArray(this.active).filter(function(t) {
+            this.active = new Set(_toConsumableArray(this.active).filter((function(t) {
               _newArrowCheck(this, _this2);
               return t.isActive();
-            }.bind(this)));
+            }).bind(this)));
           }
         }
       }
@@ -17619,10 +17639,9 @@
   }();
   var RectangleTexture = /* @__PURE__ */ function(_Texture) {
     _inherits(RectangleTexture2, _Texture);
-    var _super = _createSuper(RectangleTexture2);
     function RectangleTexture2() {
       _classCallCheck(this, RectangleTexture2);
-      return _super.apply(this, arguments);
+      return _callSuper(this, RectangleTexture2, arguments);
     }
     _createClass(RectangleTexture2, [{
       key: "_getLookupId",
@@ -17652,12 +17671,11 @@
   }(Texture);
   var Stage = /* @__PURE__ */ function(_EventEmitter) {
     _inherits(Stage2, _EventEmitter);
-    var _super = _createSuper(Stage2);
     function Stage2() {
       var _this;
       var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
       _classCallCheck(this, Stage2);
-      _this = _super.call(this);
+      _this = _callSuper(this, Stage2);
       _this._setOptions(options);
       _this._usedMemory = 0;
       _this._lastGcFrame = 0;
@@ -17752,7 +17770,7 @@
       value: function _setOptions(o) {
         var _this2 = this;
         this._options = {};
-        var opt = function opt2(name, def) {
+        var opt = (function opt2(name, def) {
           _newArrowCheck(this, _this2);
           var value = o[name];
           if (value === void 0) {
@@ -17760,7 +17778,7 @@
           } else {
             this._options[name] = value;
           }
-        }.bind(this);
+        }).bind(this);
         opt("canvas", null);
         opt("context", null);
         opt("w", 1920);
@@ -17894,10 +17912,10 @@
       value: function _performUpdateSource() {
         var _this3 = this;
         if (this._updateSourceTextures.size) {
-          this._updateSourceTextures.forEach(function(texture) {
+          this._updateSourceTextures.forEach((function(texture) {
             _newArrowCheck(this, _this3);
             texture._performUpdateSource();
-          }.bind(this));
+          }).bind(this));
           this._updateSourceTextures = /* @__PURE__ */ new Set();
         }
       }
@@ -18154,7 +18172,6 @@
   }(EventEmitter);
   var Application = /* @__PURE__ */ function(_Component) {
     _inherits(Application2, _Component);
-    var _super = _createSuper(Application2);
     function Application2() {
       var _this2 = this;
       var _this;
@@ -18164,7 +18181,7 @@
       Application2._temp_options = options;
       Application2.booting = true;
       var stage = new Stage(options.stage);
-      _this = _super.call(this, stage, properties);
+      _this = _callSuper(this, Application2, [stage, properties]);
       Application2.booting = false;
       _this.__updateFocusCounter = 0;
       _this.__keypressTimers = /* @__PURE__ */ new Map();
@@ -18173,28 +18190,28 @@
       _this.updateFocusSettings();
       _this.__keymap = _this.getOption("keys");
       if (_this.__keymap) {
-        _this.stage.platform.registerKeydownHandler(function(e) {
+        _this.stage.platform.registerKeydownHandler((function(e) {
           _newArrowCheck(this, _this2);
           _this._receiveKeydown(e);
-        }.bind(this));
-        _this.stage.platform.registerKeyupHandler(function(e) {
+        }).bind(this));
+        _this.stage.platform.registerKeyupHandler((function(e) {
           _newArrowCheck(this, _this2);
           _this._receiveKeyup(e);
-        }.bind(this));
+        }).bind(this));
       }
       if (_this.getOption("enablePointer")) {
-        _this.stage.platform.registerClickHandler(function(e) {
+        _this.stage.platform.registerClickHandler((function(e) {
           _newArrowCheck(this, _this2);
           _this._receiveClick(e);
-        }.bind(this));
-        _this.stage.platform.registerHoverHandler(function(e) {
+        }).bind(this));
+        _this.stage.platform.registerHoverHandler((function(e) {
           _newArrowCheck(this, _this2);
           _this._receiveHover(e);
-        }.bind(this));
-        _this.stage.platform.registerScrollWheelHandler(function(e) {
+        }).bind(this));
+        _this.stage.platform.registerScrollWheelHandler((function(e) {
           _newArrowCheck(this, _this2);
           _this._recieveScrollWheel(e);
-        }.bind(this));
+        }).bind(this));
         _this.cursor = "default";
       }
       return _this;
@@ -18209,7 +18226,7 @@
       value: function _setOptions(o) {
         var _this3 = this;
         this.__options = {};
-        var opt = function opt2(name, def) {
+        var opt = (function opt2(name, def) {
           _newArrowCheck(this, _this3);
           var value = o[name];
           if (value === void 0) {
@@ -18217,7 +18234,7 @@
           } else {
             this.__options[name] = value;
           }
-        }.bind(this);
+        }).bind(this);
         opt("debug", false);
         opt("keys", {
           38: "Up",
@@ -18483,13 +18500,13 @@
           if (!Utils$1.isNumber(timeout)) {
             element._throwError("config value for longpress must be a number");
           } else {
-            this.__keypressTimers.set(key, setTimeout(function() {
+            this.__keypressTimers.set(key, setTimeout((function() {
               _newArrowCheck(this, _this4);
               if (!this.stage.application.focusTopDownEvent(["_capture".concat(key, "Long"), "_captureKey"], {})) {
                 this.stage.application.focusBottomUpEvent(["_handle".concat(key, "Long"), "_handleKey"], {});
               }
               this.__keypressTimers.delete(key);
-            }.bind(this), timeout || 500));
+            }).bind(this), timeout || 500));
           }
         }
         return;
@@ -18584,77 +18601,74 @@
         var clientX = obj.clientX, clientY = obj.clientY;
         var target = this._getTargetChild(clientX, clientY);
         if (target !== this.__hoveredChild) {
-          (function() {
-            var _this6 = this;
-            var hoveredBranch = /* @__PURE__ */ new Set();
-            var newHoveredBranch = /* @__PURE__ */ new Set();
-            if (target) {
-              newHoveredBranch = new Set(target.getAncestors());
-            }
-            if (_this5.__hoveredChild) {
-              hoveredBranch = new Set(_this5.__hoveredChild.getAncestors());
-              var _iterator = _createForOfIteratorHelper(_toConsumableArray(hoveredBranch).filter(function(e) {
-                _newArrowCheck(this, _this6);
-                return !newHoveredBranch.has(e);
-              }.bind(this))), _step;
-              try {
-                for (_iterator.s(); !(_step = _iterator.n()).done; ) {
-                  var elem = _step.value;
-                  var c = Component.getComponent(elem);
-                  if (c["_handleUnhover"]) {
-                    c._handleUnhover(elem);
-                  }
-                  if (elem.parent && elem.parent.cursor) {
-                    _this5.stage.getCanvas().style.cursor = elem.parent.cursor;
-                  }
-                }
-              } catch (err) {
-                _iterator.e(err);
-              } finally {
-                _iterator.f();
-              }
-            }
-            _this5.__hoveredChild = target;
-            var diffBranch = _toConsumableArray(newHoveredBranch).filter(function(e) {
-              _newArrowCheck(this, _this6);
-              return !hoveredBranch.has(e);
-            }.bind(this));
-            var _iterator2 = _createForOfIteratorHelper(diffBranch), _step2;
+          var hoveredBranch = /* @__PURE__ */ new Set();
+          var newHoveredBranch = /* @__PURE__ */ new Set();
+          if (target) {
+            newHoveredBranch = new Set(target.getAncestors());
+          }
+          if (this.__hoveredChild) {
+            hoveredBranch = new Set(this.__hoveredChild.getAncestors());
+            var _iterator = _createForOfIteratorHelper(_toConsumableArray(hoveredBranch).filter((function(e) {
+              _newArrowCheck(this, _this5);
+              return !newHoveredBranch.has(e);
+            }).bind(this))), _step;
             try {
-              for (_iterator2.s(); !(_step2 = _iterator2.n()).done; ) {
-                var _elem = _step2.value;
-                var _c2 = Component.getComponent(_elem);
-                if (_c2["_handleHover"]) {
-                  _c2._handleHover(_elem);
+              for (_iterator.s(); !(_step = _iterator.n()).done; ) {
+                var elem = _step.value;
+                var c = Component.getComponent(elem);
+                if (c["_handleUnhover"]) {
+                  c._handleUnhover(elem);
+                }
+                if (elem.parent && elem.parent.cursor) {
+                  this.stage.getCanvas().style.cursor = elem.parent.cursor;
                 }
               }
             } catch (err) {
-              _iterator2.e(err);
+              _iterator.e(err);
             } finally {
-              _iterator2.f();
+              _iterator.f();
             }
-            var lastElement = diffBranch[0];
-            if (lastElement && lastElement.cursor) {
-              _this5.stage.getCanvas().style.cursor = lastElement.cursor;
-            }
-            if (diffBranch.length === 0 && target) {
-              var _c = Component.getComponent(target);
-              if (_c["_handleHover"]) {
-                _c._handleHover(target);
+          }
+          this.__hoveredChild = target;
+          var diffBranch = _toConsumableArray(newHoveredBranch).filter((function(e) {
+            _newArrowCheck(this, _this5);
+            return !hoveredBranch.has(e);
+          }).bind(this));
+          var _iterator2 = _createForOfIteratorHelper(diffBranch), _step2;
+          try {
+            for (_iterator2.s(); !(_step2 = _iterator2.n()).done; ) {
+              var _elem = _step2.value;
+              var _c2 = Component.getComponent(_elem);
+              if (_c2["_handleHover"]) {
+                _c2._handleHover(_elem);
               }
             }
-          })();
+          } catch (err) {
+            _iterator2.e(err);
+          } finally {
+            _iterator2.f();
+          }
+          var lastElement = diffBranch[0];
+          if (lastElement && lastElement.cursor) {
+            this.stage.getCanvas().style.cursor = lastElement.cursor;
+          }
+          if (diffBranch.length === 0 && target) {
+            var _c = Component.getComponent(target);
+            if (_c["_handleHover"]) {
+              _c._handleHover(target);
+            }
+          }
         }
       }
     }, {
       key: "_getTargetChild",
       value: function _getTargetChild(clientX, clientY) {
-        var _this7 = this;
+        var _this6 = this;
         var children = this.stage.application.children;
         var affected = this._findChildren([], children);
         var hoverableChildren = this._withinClickableRange(affected, clientX, clientY);
-        hoverableChildren.sort(function(a, b) {
-          _newArrowCheck(this, _this7);
+        hoverableChildren.sort((function(a, b) {
+          _newArrowCheck(this, _this6);
           if (a.zIndex > b.zIndex) {
             return 1;
           } else if (a.zIndex < b.zIndex) {
@@ -18662,7 +18676,7 @@
           } else {
             return a.id > b.id ? 1 : -1;
           }
-        }.bind(this));
+        }).bind(this));
         if (hoverableChildren.length) {
           return hoverableChildren.slice(-1)[0];
         } else {
@@ -18689,36 +18703,36 @@
     }, {
       key: "_withinClickableRange",
       value: function _withinClickableRange(affectedChildren, cursorX, cursorY) {
-        var _this8 = this;
+        var _this7 = this;
         var n = affectedChildren.length;
         var candidates = [];
         var _loop = function _loop2() {
-          var _this9 = this;
+          var _this8 = this;
           var child = affectedChildren[n];
-          var precision = _this8.stage.getRenderPrecision() / _this8.stage.getOption("devicePixelRatio");
+          var precision = _this7.stage.getRenderPrecision() / _this7.stage.getOption("devicePixelRatio");
           var ctx = child.core._worldContext;
           var cx = ctx.px * precision;
           var cy = ctx.py * precision;
           var cw = child.finalW * ctx.ta * precision;
           var ch = child.finalH * ctx.td * precision;
-          if (cx > _this8.stage.w || cy > _this8.stage.h) {
-            return "continue";
+          if (cx > _this7.stage.w || cy > _this7.stage.h) {
+            return 0;
           }
           if (child.parent.core._scissor) {
-            var scissor = child.parent.core._scissor.map(function(v) {
-              _newArrowCheck(this, _this9);
+            var scissor = child.parent.core._scissor.map((function(v) {
+              _newArrowCheck(this, _this8);
               return v * precision;
-            }.bind(this));
-            if (!_this8._testCollision.apply(_this8, [cursorX, cursorY].concat(_toConsumableArray(scissor))))
-              return "continue";
+            }).bind(this));
+            if (!_this7._testCollision.apply(_this7, [cursorX, cursorY].concat(_toConsumableArray(scissor))))
+              return 0;
           }
-          if (_this8._testCollision(cursorX, cursorY, cx, cy, cw, ch)) {
+          if (_this7._testCollision(cursorX, cursorY, cx, cy, cw, ch)) {
             candidates.push(child);
           }
-        };
+        }, _ret;
         while (n--) {
-          var _ret = _loop();
-          if (_ret === "continue")
+          _ret = _loop();
+          if (_ret === 0)
             continue;
         }
         return candidates;
@@ -18771,11 +18785,10 @@
   }(Component);
   var StaticCanvasTexture = /* @__PURE__ */ function(_Texture) {
     _inherits(StaticCanvasTexture2, _Texture);
-    var _super = _createSuper(StaticCanvasTexture2);
     function StaticCanvasTexture2(stage) {
       var _this;
       _classCallCheck(this, StaticCanvasTexture2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, StaticCanvasTexture2, [stage]);
       _this._factory = void 0;
       _this._lookupId = void 0;
       return _this;
@@ -18803,17 +18816,17 @@
       value: function _getSourceLoader() {
         var _this2 = this;
         var f = this._factory;
-        return function(cb) {
+        return (function(cb) {
           var _this3 = this;
           _newArrowCheck(this, _this2);
-          return f(function(err, canvas) {
+          return f((function(err, canvas) {
             _newArrowCheck(this, _this3);
             if (err) {
               return cb(err);
             }
             cb(null, this.stage.platform.getTextureOptionsForDrawingCanvas(canvas));
-          }.bind(this), this.stage);
-        }.bind(this);
+          }).bind(this), this.stage);
+        }).bind(this);
       }
     }]);
     return StaticCanvasTexture2;
@@ -18840,14 +18853,14 @@
         if (!Array.isArray(radius)) {
           radius = [radius, radius, radius, radius];
         }
-        var factory = function factory2(cb, stage) {
+        var factory = (function factory2(cb, stage) {
           _newArrowCheck(this, _this);
           if (Utils$1.isSpark) {
             stage.platform.createRoundRect(cb, stage, w, h, radius, strokeWidth, strokeColor, fill, fillColor);
           } else {
             cb(null, this.createRoundRect(stage, w, h, radius, strokeWidth, strokeColor, fill, fillColor));
           }
-        }.bind(this);
+        }).bind(this);
         var id = "rect" + [w, h, strokeWidth, strokeColor, fill ? 1 : 0, fillColor].concat(radius).join(",");
         return Tools2.getCanvasTexture(factory, id);
       }
@@ -18904,14 +18917,14 @@
         if (!Array.isArray(radius)) {
           radius = [radius, radius, radius, radius];
         }
-        var factory = function factory2(cb, stage) {
+        var factory = (function factory2(cb, stage) {
           _newArrowCheck(this, _this2);
           if (Utils$1.isSpark) {
             stage.platform.createShadowRect(cb, stage, w, h, radius, blur, margin);
           } else {
             cb(null, this.createShadowRect(stage, w, h, radius, blur, margin));
           }
-        }.bind(this);
+        }).bind(this);
         var id = "shadow" + [w, h, blur, margin].concat(radius).join(",");
         return Tools2.getCanvasTexture(factory, id);
       }
@@ -18951,14 +18964,14 @@
       key: "getSvgTexture",
       value: function getSvgTexture(url, w, h) {
         var _this3 = this;
-        var factory = function factory2(cb, stage) {
+        var factory = (function factory2(cb, stage) {
           _newArrowCheck(this, _this3);
           if (Utils$1.isSpark) {
             stage.platform.createSvg(cb, stage, url, w, h);
           } else {
             this.createSvg(cb, stage, url, w, h);
           }
-        }.bind(this);
+        }).bind(this);
         var id = "svg" + [w, h, url].join(",");
         return Tools2.getCanvasTexture(factory, id);
       }
@@ -18970,17 +18983,17 @@
         var ctx = canvas.getContext("2d");
         ctx.imageSmoothingEnabled = true;
         var img = new Image();
-        img.onload = function() {
+        img.onload = (function() {
           _newArrowCheck(this, _this4);
           canvas.width = w;
           canvas.height = h;
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           cb(null, canvas);
-        }.bind(this);
-        img.onerror = function(err) {
+        }).bind(this);
+        img.onerror = (function(err) {
           _newArrowCheck(this, _this4);
           cb(err);
-        }.bind(this);
+        }).bind(this);
         if (!Utils$1.isPS4) {
           img.crossOrigin = "Anonymous";
         }
@@ -19076,11 +19089,10 @@
   }();
   var ObjectListProxy = /* @__PURE__ */ function(_ObjectList) {
     _inherits(ObjectListProxy2, _ObjectList);
-    var _super = _createSuper(ObjectListProxy2);
     function ObjectListProxy2(target) {
       var _this;
       _classCallCheck(this, ObjectListProxy2);
-      _this = _super.call(this);
+      _this = _callSuper(this, ObjectListProxy2);
       _this._target = target;
       return _this;
     }
@@ -19124,11 +19136,10 @@
   }(ObjectList);
   var ObjectListWrapper = /* @__PURE__ */ function(_ObjectListProxy) {
     _inherits(ObjectListWrapper2, _ObjectListProxy);
-    var _super = _createSuper(ObjectListWrapper2);
     function ObjectListWrapper2(target, wrap) {
       var _this;
       _classCallCheck(this, ObjectListWrapper2);
-      _this = _super.call(this, target);
+      _this = _callSuper(this, ObjectListWrapper2, [target]);
       _this._wrap = wrap;
       return _this;
     }
@@ -19154,14 +19165,14 @@
       key: "onSync",
       value: function onSync(removed, added, order) {
         var _this2 = this;
-        added.forEach(function(a) {
+        added.forEach((function(a) {
           _newArrowCheck(this, _this2);
           return this.wrap(a);
-        }.bind(this));
-        order = order.map(function(a) {
+        }).bind(this));
+        order = order.map((function(a) {
           _newArrowCheck(this, _this2);
           return a._wrapper;
-        }.bind(this));
+        }).bind(this));
         _get(_getPrototypeOf(ObjectListWrapper2.prototype), "onSync", this).call(this, removed, added, order);
       }
     }, {
@@ -19180,10 +19191,9 @@
   }(ObjectListProxy);
   var NoiseTexture = /* @__PURE__ */ function(_Texture) {
     _inherits(NoiseTexture2, _Texture);
-    var _super = _createSuper(NoiseTexture2);
     function NoiseTexture2() {
       _classCallCheck(this, NoiseTexture2);
-      return _super.apply(this, arguments);
+      return _callSuper(this, NoiseTexture2, arguments);
     }
     _createClass(NoiseTexture2, [{
       key: "_getLookupId",
@@ -19223,11 +19233,10 @@
   }(Texture);
   var HtmlTexture = /* @__PURE__ */ function(_Texture) {
     _inherits(HtmlTexture2, _Texture);
-    var _super = _createSuper(HtmlTexture2);
     function HtmlTexture2(stage) {
       var _this;
       _classCallCheck(this, HtmlTexture2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, HtmlTexture2, [stage]);
       _this._htmlElement = void 0;
       _this._scale = 1;
       return _this;
@@ -19299,10 +19308,10 @@
               width: canvas.width,
               height: canvas.height
             });
-          }).catch(function(e) {
+          }).catch((function(e) {
             _newArrowCheck(this, _this2);
             console.error("[Lightning]", e);
-          }.bind(this));
+          }).bind(this));
         };
       }
     }], [{
@@ -19330,11 +19339,10 @@
   }(Texture);
   var StaticTexture = /* @__PURE__ */ function(_Texture) {
     _inherits(StaticTexture2, _Texture);
-    var _super = _createSuper(StaticTexture2);
     function StaticTexture2(stage, options) {
       var _this;
       _classCallCheck(this, StaticTexture2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, StaticTexture2, [stage]);
       _this._options = options;
       return _this;
     }
@@ -19358,21 +19366,20 @@
       key: "_getSourceLoader",
       value: function _getSourceLoader() {
         var _this2 = this;
-        return function(cb) {
+        return (function(cb) {
           _newArrowCheck(this, _this2);
           cb(null, this._options);
-        }.bind(this);
+        }).bind(this);
       }
     }]);
     return StaticTexture2;
   }(Texture);
   var ListComponent = /* @__PURE__ */ function(_Component) {
     _inherits(ListComponent2, _Component);
-    var _super = _createSuper(ListComponent2);
     function ListComponent2(stage) {
       var _thisSuper, _this;
       _classCallCheck(this, ListComponent2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, ListComponent2, [stage]);
       _this._wrapper = _get((_thisSuper = _assertThisInitialized(_this), _getPrototypeOf(ListComponent2.prototype)), "_children", _thisSuper).a({});
       _this._reloadVisibleElements = false;
       _this._visibleItems = /* @__PURE__ */ new Set();
@@ -19410,10 +19417,10 @@
         var _this2 = this;
         this._wrapper.transition(this.property, this._scrollTransitionSettings);
         this._scrollTransition = this._wrapper.transition(this.property);
-        this._scrollTransition.on("progress", function(p) {
+        this._scrollTransition.on("progress", (function(p) {
           _newArrowCheck(this, _this2);
           return this.update();
-        }.bind(this));
+        }).bind(this));
         this.setIndex(0, true, true);
         this._started = true;
         this.update();
@@ -19733,19 +19740,18 @@
   }(Component);
   var ListItems = /* @__PURE__ */ function(_ObjectListWrapper) {
     _inherits(ListItems2, _ObjectListWrapper);
-    var _super2 = _createSuper(ListItems2);
     function ListItems2(list) {
       var _this4 = this;
       var _this3;
       _classCallCheck(this, ListItems2);
-      var wrap = function wrap2(item) {
+      var wrap = (function wrap2(item) {
         _newArrowCheck(this, _this4);
         var parent = item.stage.createElement();
         parent.add(item);
         parent.visible = false;
         return parent;
-      }.bind(this);
-      _this3 = _super2.call(this, list._wrapper._children, wrap);
+      }).bind(this);
+      _this3 = _callSuper(this, ListItems2, [list._wrapper._children, wrap]);
       _this3.list = list;
       return _this3;
     }
@@ -19811,11 +19817,10 @@
   }(ObjectListWrapper);
   var LinearBlurShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(LinearBlurShader2, _DefaultShader);
-    var _super = _createSuper(LinearBlurShader2);
     function LinearBlurShader2(context) {
       var _this;
       _classCallCheck(this, LinearBlurShader2);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, LinearBlurShader2, [context]);
       _this._direction = new Float32Array([1, 0]);
       _this._kernelRadius = 1;
       return _this;
@@ -19868,10 +19873,9 @@
   LinearBlurShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    uniform vec2 resolution;\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    uniform vec2 direction;\n    uniform int kernelRadius;\n    \n    vec4 blur1(sampler2D image, vec2 uv, vec2 resolution, vec2 direction) {\n        vec4 color = vec4(0.0);\n        vec2 off1 = vec2(1.3333333333333333) * direction;\n        color += texture2D(image, uv) * 0.29411764705882354;\n        color += texture2D(image, uv + (off1 / resolution)) * 0.35294117647058826;\n        color += texture2D(image, uv - (off1 / resolution)) * 0.35294117647058826;\n        return color; \n    }\n    \n    vec4 blur2(sampler2D image, vec2 uv, vec2 resolution, vec2 direction) {\n        vec4 color = vec4(0.0);\n        vec2 off1 = vec2(1.3846153846) * direction;\n        vec2 off2 = vec2(3.2307692308) * direction;\n        color += texture2D(image, uv) * 0.2270270270;\n        color += texture2D(image, uv + (off1 / resolution)) * 0.3162162162;\n        color += texture2D(image, uv - (off1 / resolution)) * 0.3162162162;\n        color += texture2D(image, uv + (off2 / resolution)) * 0.0702702703;\n        color += texture2D(image, uv - (off2 / resolution)) * 0.0702702703;\n        return color;\n    }\n    \n    vec4 blur3(sampler2D image, vec2 uv, vec2 resolution, vec2 direction) {\n        vec4 color = vec4(0.0);\n        vec2 off1 = vec2(1.411764705882353) * direction;\n        vec2 off2 = vec2(3.2941176470588234) * direction;\n        vec2 off3 = vec2(5.176470588235294) * direction;\n        color += texture2D(image, uv) * 0.1964825501511404;\n        color += texture2D(image, uv + (off1 / resolution)) * 0.2969069646728344;\n        color += texture2D(image, uv - (off1 / resolution)) * 0.2969069646728344;\n        color += texture2D(image, uv + (off2 / resolution)) * 0.09447039785044732;\n        color += texture2D(image, uv - (off2 / resolution)) * 0.09447039785044732;\n        color += texture2D(image, uv + (off3 / resolution)) * 0.010381362401148057;\n        color += texture2D(image, uv - (off3 / resolution)) * 0.010381362401148057;\n        return color;\n    }    \n\n    void main(void){\n        if (kernelRadius == 1) {\n            gl_FragColor = blur1(uSampler, vTextureCoord, resolution, direction) * vColor;\n        } else if (kernelRadius == 2) {\n            gl_FragColor = blur2(uSampler, vTextureCoord, resolution, direction) * vColor;\n        } else {\n            gl_FragColor = blur3(uSampler, vTextureCoord, resolution, direction) * vColor;\n        }\n    }\n";
   var BoxBlurShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(BoxBlurShader2, _DefaultShader);
-    var _super = _createSuper(BoxBlurShader2);
     function BoxBlurShader2() {
       _classCallCheck(this, BoxBlurShader2);
-      return _super.apply(this, arguments);
+      return _callSuper(this, BoxBlurShader2, arguments);
     }
     _createClass(BoxBlurShader2, [{
       key: "setupUniforms",
@@ -19888,11 +19892,10 @@
   BoxBlurShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoordUl;\n    varying vec2 vTextureCoordUr;\n    varying vec2 vTextureCoordBl;\n    varying vec2 vTextureCoordBr;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    void main(void){\n        vec4 color = 0.25 * (texture2D(uSampler, vTextureCoordUl) + texture2D(uSampler, vTextureCoordUr) + texture2D(uSampler, vTextureCoordBl) + texture2D(uSampler, vTextureCoordBr));\n        gl_FragColor = color * vColor;\n    }\n";
   var BlurShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(BlurShader2, _DefaultShader);
-    var _super = _createSuper(BlurShader2);
     function BlurShader2(context) {
       var _this;
       _classCallCheck(this, BlurShader2);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, BlurShader2, [context]);
       _this._kernelRadius = 1;
       return _this;
     }
@@ -19927,10 +19930,9 @@
   }(DefaultShader);
   var FastBlurComponent = /* @__PURE__ */ function(_Component) {
     _inherits(FastBlurComponent2, _Component);
-    var _super = _createSuper(FastBlurComponent2);
     function FastBlurComponent2() {
       _classCallCheck(this, FastBlurComponent2);
-      return _super.apply(this, arguments);
+      return _callSuper(this, FastBlurComponent2, arguments);
     }
     _createClass(FastBlurComponent2, [{
       key: "wrap",
@@ -20002,11 +20004,10 @@
   }(Component);
   var C2dFastBlurComponent = /* @__PURE__ */ function(_Component2) {
     _inherits(C2dFastBlurComponent2, _Component2);
-    var _super2 = _createSuper(C2dFastBlurComponent2);
     function C2dFastBlurComponent2(stage) {
       var _this;
       _classCallCheck(this, C2dFastBlurComponent2);
-      _this = _super2.call(this, stage);
+      _this = _callSuper(this, C2dFastBlurComponent2, [stage]);
       _this._textwrap = _this.sel("Textwrap");
       _this._wrapper = _this.sel("Textwrap>Content");
       _this._amount = 0;
@@ -20108,11 +20109,10 @@
   }(Component);
   var WebGLFastBlurComponent = /* @__PURE__ */ function(_Component3) {
     _inherits(WebGLFastBlurComponent2, _Component3);
-    var _super3 = _createSuper(WebGLFastBlurComponent2);
     function WebGLFastBlurComponent2(stage) {
       var _this2;
       _classCallCheck(this, WebGLFastBlurComponent2);
-      _this2 = _super3.call(this, stage);
+      _this2 = _callSuper(this, WebGLFastBlurComponent2, [stage]);
       _this2._textwrap = _this2.sel("Textwrap");
       _this2._wrapper = _this2.sel("Textwrap>Content");
       _this2._layers = _this2.sel("Layers");
@@ -20148,13 +20148,13 @@
           y: 1.5,
           kernelRadius: 1
         }];
-        var filterShaders = filterShaderSettings.map(function(s) {
+        var filterShaders = filterShaderSettings.map((function(s) {
           _newArrowCheck(this, _this3);
           var shader = Shader.create(this.stage, Object.assign({
             type: LinearBlurShader
           }, s));
           return shader;
-        }.bind(this));
+        }).bind(this));
         this._setLayerTexture(this.getLayerContents(0), this._textwrap.getTexture(), []);
         this._setLayerTexture(this.getLayerContents(1), this.getLayer(0).getTexture(), [filterShaders[0], filterShaders[1]]);
         this._setLayerTexture(this.getLayerContents(2), this.getLayer(1).getTexture(), [filterShaders[0], filterShaders[1], filterShaders[2], filterShaders[3]]);
@@ -20385,11 +20385,10 @@
   }(Component);
   var FastBlurOutputShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(FastBlurOutputShader2, _DefaultShader);
-    var _super4 = _createSuper(FastBlurOutputShader2);
     function FastBlurOutputShader2(ctx) {
       var _this4;
       _classCallCheck(this, FastBlurOutputShader2);
-      _this4 = _super4.call(this, ctx);
+      _this4 = _callSuper(this, FastBlurOutputShader2, [ctx]);
       _this4._a = 0;
       _this4._otherTextureSource = null;
       return _this4;
@@ -20431,11 +20430,10 @@
   FastBlurOutputShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    uniform sampler2D uSampler2;\n    uniform float a;\n    void main(void){\n        if (a == 1.0) {\n            gl_FragColor = texture2D(uSampler2, vTextureCoord) * vColor;\n        } else {\n            gl_FragColor = ((1.0 - a) * texture2D(uSampler, vTextureCoord) + (a * texture2D(uSampler2, vTextureCoord))) * vColor;\n        }\n    }\n";
   var BloomComponent = /* @__PURE__ */ function(_Component) {
     _inherits(BloomComponent2, _Component);
-    var _super = _createSuper(BloomComponent2);
     function BloomComponent2(stage) {
       var _this;
       _classCallCheck(this, BloomComponent2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, BloomComponent2, [stage]);
       _this._textwrap = _this.sel("Textwrap");
       _this._wrapper = _this.sel("Textwrap.Content");
       _this._layers = _this.sel("Layers");
@@ -20470,13 +20468,13 @@
           y: 1.5,
           kernelRadius: 3
         }];
-        var filterShaders = filterShaderSettings.map(function(s) {
+        var filterShaders = filterShaderSettings.map((function(s) {
           _newArrowCheck(this, _this2);
           var shader = this.stage.createShader(Object.assign({
             type: LinearBlurShader
           }, s));
           return shader;
-        }.bind(this));
+        }).bind(this));
         this._setLayerTexture(this.getLayerContents(0), this._textwrap.getTexture(), []);
         this._setLayerTexture(this.getLayerContents(1), this.getLayer(0).getTexture(), [filterShaders[0], filterShaders[1]]);
         this._setLayerTexture(this.getLayerContents(2), this.getLayer(1).getTexture(), [filterShaders[0], filterShaders[1], filterShaders[2], filterShaders[3]]);
@@ -20683,21 +20681,19 @@
   }(Component);
   var BloomBaseShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(BloomBaseShader2, _DefaultShader);
-    var _super2 = _createSuper(BloomBaseShader2);
     function BloomBaseShader2() {
       _classCallCheck(this, BloomBaseShader2);
-      return _super2.apply(this, arguments);
+      return _callSuper(this, BloomBaseShader2, arguments);
     }
-    return BloomBaseShader2;
+    return _createClass(BloomBaseShader2);
   }(DefaultShader$1);
   BloomBaseShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    void main(void){\n        vec4 color = texture2D(uSampler, vTextureCoord) * vColor;\n        float m = max(max(color.r, color.g), color.b);\n        float c = max(0.0, (m - 0.80)) * 5.0;\n        color = color * c;\n        gl_FragColor = color;\n    }\n";
   var SmoothScaleComponent = /* @__PURE__ */ function(_Component) {
     _inherits(SmoothScaleComponent2, _Component);
-    var _super = _createSuper(SmoothScaleComponent2);
     function SmoothScaleComponent2(stage) {
       var _this;
       _classCallCheck(this, SmoothScaleComponent2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, SmoothScaleComponent2, [stage]);
       _this._smoothScale = 1;
       _this._iterations = 0;
       return _this;
@@ -20804,11 +20800,10 @@
   }(Component);
   var BorderComponent = /* @__PURE__ */ function(_Component) {
     _inherits(BorderComponent2, _Component);
-    var _super = _createSuper(BorderComponent2);
     function BorderComponent2(stage) {
       var _this;
       _classCallCheck(this, BorderComponent2);
-      _this = _super.call(this, stage);
+      _this = _callSuper(this, BorderComponent2, [stage]);
       _this._borderTop = _this.tag("Top");
       _this._borderRight = _this.tag("Right");
       _this._borderBottom = _this.tag("Bottom");
@@ -21004,11 +20999,10 @@
   }(Component);
   var WebGLGrayscaleShader = /* @__PURE__ */ function(_WebGLDefaultShader) {
     _inherits(WebGLGrayscaleShader2, _WebGLDefaultShader);
-    var _super = _createSuper(WebGLGrayscaleShader2);
     function WebGLGrayscaleShader2(context) {
       var _this;
       _classCallCheck(this, WebGLGrayscaleShader2);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, WebGLGrayscaleShader2, [context]);
       _this._amount = 1;
       return _this;
     }
@@ -21043,11 +21037,10 @@
   WebGLGrayscaleShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    uniform float amount;\n    void main(void){\n        vec4 color = texture2D(uSampler, vTextureCoord) * vColor;\n        float grayness = 0.2 * color.r + 0.6 * color.g + 0.2 * color.b;\n        gl_FragColor = vec4(amount * vec3(grayness, grayness, grayness) + (1.0 - amount) * color.rgb, color.a);\n    }\n";
   var C2dGrayscaleShader = /* @__PURE__ */ function(_C2dDefaultShader) {
     _inherits(C2dGrayscaleShader2, _C2dDefaultShader);
-    var _super2 = _createSuper(C2dGrayscaleShader2);
     function C2dGrayscaleShader2(context) {
       var _this2;
       _classCallCheck(this, C2dGrayscaleShader2);
-      _this2 = _super2.call(this, context);
+      _this2 = _callSuper(this, C2dGrayscaleShader2, [context]);
       _this2._amount = 1;
       return _this2;
     }
@@ -21087,11 +21080,10 @@
   }(DefaultShader);
   var DitheringShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(DitheringShader2, _DefaultShader);
-    var _super = _createSuper(DitheringShader2);
     function DitheringShader2(ctx) {
       var _this;
       _classCallCheck(this, DitheringShader2);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, DitheringShader2, [ctx]);
       _this._noiseTexture = new NoiseTexture(ctx.stage);
       _this._graining = 1 / 256;
       _this._random = false;
@@ -21203,11 +21195,10 @@
   DitheringShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec2 vNoiseTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    uniform sampler2D uNoiseSampler;\n    uniform float graining;\n    void main(void){\n        vec4 noise = texture2D(uNoiseSampler, vNoiseTextureCoord);\n        vec4 color = texture2D(uSampler, vTextureCoord);\n        gl_FragColor = (color * vColor) + graining * (noise.r - 0.5);\n    }\n";
   var CircularPushShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(CircularPushShader2, _DefaultShader);
-    var _super = _createSuper(CircularPushShader2);
     function CircularPushShader2(ctx) {
       var _this;
       _classCallCheck(this, CircularPushShader2);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, CircularPushShader2, [ctx]);
       _this._inputValue = 0;
       _this._maxDerivative = 0.01;
       _this._normalizedValue = 0;
@@ -21375,11 +21366,10 @@
   CircularPushShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    varying vec2 vPos;\n    uniform float amount;\n    uniform float offset;\n    uniform float values[100];\n    uniform float buckets;\n    uniform sampler2D uSampler;\n    uniform sampler2D uValueSampler;\n    void main(void){\n        float l = length(vPos);\n        float m = (l * buckets * 0.678 - offset) / buckets;\n        float f = texture2D(uValueSampler, vec2(m, 0.0)).a * amount;\n        vec2 unit = vPos / l;\n        gl_FragColor = texture2D(uSampler, vTextureCoord - f * unit) * vColor;\n    }\n";
   var InversionShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(InversionShader2, _DefaultShader);
-    var _super = _createSuper(InversionShader2);
     function InversionShader2(context) {
       var _this;
       _classCallCheck(this, InversionShader2);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, InversionShader2, [context]);
       _this._amount = 1;
       return _this;
     }
@@ -21409,11 +21399,10 @@
   InversionShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    uniform float amount;\n    void main(void){\n        vec4 color = texture2D(uSampler, vTextureCoord);\n        color.rgb = color.rgb * (1.0 - amount) + amount * (1.0 * color.a - color.rgb); \n        gl_FragColor = color * vColor;\n    }\n";
   var OutlineShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(OutlineShader2, _DefaultShader);
-    var _super = _createSuper(OutlineShader2);
     function OutlineShader2(ctx) {
       var _this;
       _classCallCheck(this, OutlineShader2);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, OutlineShader2, [ctx]);
       _this._width = 5;
       _this._col = 4294967295;
       _this._color = [1, 1, 1, 1];
@@ -21506,11 +21495,10 @@
   OutlineShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    varying vec2 vCorner;\n    uniform vec4 color;\n    uniform sampler2D uSampler;\n    void main(void){\n        vec2 m = min(vCorner, 1.0 - vCorner);\n        float value = step(0.0, min(m.x, m.y));\n        gl_FragColor = mix(color, texture2D(uSampler, vTextureCoord) * vColor, value);\n    }\n";
   var PixelateShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(PixelateShader2, _DefaultShader);
-    var _super = _createSuper(PixelateShader2);
     function PixelateShader2(ctx) {
       var _this;
       _classCallCheck(this, PixelateShader2);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, PixelateShader2, [ctx]);
       _this._size = new Float32Array([4, 4]);
       return _this;
     }
@@ -21609,11 +21597,10 @@
   PixelateShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    varying vec2 vTextureRes;\n\n    uniform vec2 size;\n    uniform sampler2D uSampler;\n    \n    vec2 mapCoord( vec2 coord )\n    {\n        coord *= vTextureRes.xy;\n        return coord;\n    }\n    \n    vec2 unmapCoord( vec2 coord )\n    {\n        coord /= vTextureRes.xy;\n        return coord;\n    }\n    \n    vec2 pixelate(vec2 coord, vec2 size)\n    {\n        return floor( coord / size ) * size;\n    }\n    \n    void main(void)\n    {\n        vec2 coord = mapCoord(vTextureCoord);\n        coord = pixelate(coord, size);\n        coord = unmapCoord(coord);\n        gl_FragColor = texture2D(uSampler, coord) * vColor;\n    }\n";
   var RadialFilterShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(RadialFilterShader2, _DefaultShader);
-    var _super = _createSuper(RadialFilterShader2);
     function RadialFilterShader2(context) {
       var _this;
       _classCallCheck(this, RadialFilterShader2);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, RadialFilterShader2, [context]);
       _this._radius = 0;
       _this._cutoff = 1;
       return _this;
@@ -21655,11 +21642,10 @@
   RadialFilterShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec2 pos;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    uniform float radius;\n    uniform float cutoff;\n    void main(void){\n        vec4 color = texture2D(uSampler, vTextureCoord);\n        float f = max(0.0, min(1.0, 1.0 - (length(pos) - radius) * cutoff));\n        gl_FragColor = texture2D(uSampler, vTextureCoord) * vColor * f;\n    }\n";
   var RoundedRectangleShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(RoundedRectangleShader2, _DefaultShader);
-    var _super = _createSuper(RoundedRectangleShader2);
     function RoundedRectangleShader2(context) {
       var _this;
       _classCallCheck(this, RoundedRectangleShader2);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, RoundedRectangleShader2, [context]);
       _this._blend = 0;
       _this._radius = [1, 1, 1, 1];
       _this._stroke = 0;
@@ -21775,10 +21761,10 @@
         _get(_getPrototypeOf(RoundedRectangleShader2.prototype), "setupUniforms", this).call(this, operation);
         var owner = operation.shaderOwner;
         var renderPrecision = this.ctx.stage.getRenderPrecision();
-        var _radius = this._radius.map(function(r) {
+        var _radius = this._radius.map((function(r) {
           _newArrowCheck(this, _this2);
           return (r + 0.5) * renderPrecision;
-        }.bind(this));
+        }).bind(this));
         this._setUniform("radius", new Float32Array(_radius), this.gl.uniform4fv);
         this._setUniform("alpha", operation.getElementCore(0).renderContext.alpha, this.gl.uniform1f);
         this._setUniform("blend", this._blend, this.gl.uniform1f);
@@ -21794,11 +21780,10 @@
   RoundedRectangleShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n\n    #define PI 3.14159265359\n\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n\n    uniform sampler2D uSampler;\n    uniform vec2 resolution;\n    uniform vec4 radius;\n    uniform float stroke;\n    uniform vec4 strokeColor;\n    uniform vec4 fillColor;\n    uniform float alpha;\n    uniform float fill;\n    uniform float blend;\n    \n    float boxDist(vec2 p, vec2 size, float radius){\n        size -= vec2(radius);\n        vec2 d = abs(p) - size;\n        return min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - radius;\n    }\n    \n    float fillMask(float dist){\n        return clamp(-dist, 0.0, 1.0);\n    }\n    \n    float innerBorderMask(float dist, float width){\n        float alpha1 = clamp(dist + width, 0.0, 1.0);\n        float alpha2 = clamp(dist, 0.0, 1.0);\n        return alpha1 - alpha2;\n    }\n\n    void main() {\n        vec2 halfRes = 0.5 * resolution.xy;\n        float r = 0.0;\n        if (vTextureCoord.x < 0.5 && vTextureCoord.y < 0.5) {\n            r = radius[0];\n        } else if (vTextureCoord.x >= 0.5 && vTextureCoord.y < 0.5) {\n            r = radius[1];\n        } else if (vTextureCoord.x >= 0.5 && vTextureCoord.y >= 0.5) {\n            r = radius[2];\n        } else {\n            r = radius[3];\n        }\n        \n        float b = boxDist(vTextureCoord.xy * resolution - halfRes, halfRes - 0.005, r);\n        vec4 tex = texture2D(uSampler, vTextureCoord) * vColor;\n        vec4 blend = mix(vec4(1.0) * alpha, tex, blend);     \n        vec4 layer1 = mix(vec4(0.0), tex * fillColor, fillMask(b));\n        gl_FragColor = mix(layer1, blend * strokeColor, innerBorderMask(b, stroke));\n    }\n";
   var FadeOutShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(FadeOutShader2, _DefaultShader);
-    var _super = _createSuper(FadeOutShader2);
     function FadeOutShader2(context) {
       var _this;
       _classCallCheck(this, FadeOutShader2);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, FadeOutShader2, [context]);
       _this._fade = [0, 0, 0, 0];
       return _this;
     }
@@ -21866,10 +21851,10 @@
         _get(_getPrototypeOf(FadeOutShader2.prototype), "setupUniforms", this).call(this, operation);
         var owner = operation.shaderOwner;
         var renderPrecision = this.ctx.stage.getRenderPrecision();
-        var fade = this._fade.map(function(f) {
+        var fade = this._fade.map((function(f) {
           _newArrowCheck(this, _this2);
           return f * renderPrecision;
-        }.bind(this));
+        }).bind(this));
         this._setUniform("fade", new Float32Array(fade), this.gl.uniform4fv);
         this._setUniform("resolution", new Float32Array([owner._w * renderPrecision, owner._h * renderPrecision]), this.gl.uniform2fv);
       }
@@ -21879,11 +21864,10 @@
   FadeOutShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    uniform vec2 resolution;\n    uniform vec4 fade;\n    \n    void main() {\n        vec4 color = texture2D(uSampler, vTextureCoord) * vColor;\n        vec2 halfRes = 0.5 * resolution.xy;\n        vec2 point = vTextureCoord.xy * resolution.xy;\n        \n        vec2 pos1;\n        vec2 pos2;\n        vec2 d;\n        float c;\n        float t = 0.0;\n             \n        if(fade[0] > 0.0) {\n            pos1 = vec2(point.x, point.y);\n            pos2 = vec2(point.x, point.y + fade[0]);\n            d = pos2 - pos1;\n            c = dot(pos1, d) / dot(d, d);\n            t = smoothstep(0.0, 1.0, clamp(c, 0.0, 1.0));\n            color = mix(vec4(0.0), color, t);\n        }\n        \n        if(fade[1] > 0.0) {\n            vec2 pos1 = vec2(point.x - resolution.x - fade[1], vTextureCoord.y);\n            vec2 pos2 = vec2(point.x - resolution.x, vTextureCoord.y);\n            d = pos1 - pos2;\n            c = dot(pos2, d) / dot(d, d);\n            t = smoothstep(0.0, 1.0, clamp(c, 0.0, 1.0));\n            color = mix(vec4(0.0), color, t);\n        }\n        \n        if(fade[2] > 0.0) {\n            vec2 pos1 = vec2(vTextureCoord.x, point.y - resolution.y - fade[2]);\n            vec2 pos2 = vec2(vTextureCoord.x, point.y - resolution.y);\n            d = pos1 - pos2;\n            c = dot(pos2, d) / dot(d, d);\n            t = smoothstep(0.0, 1.0, clamp(c, 0.0, 1.0));\n            color = mix(vec4(0.0), color, t);\n        }\n        \n        if(fade[3] > 0.0) {\n            pos1 = vec2(point.x, point.y);\n            pos2 = vec2(point.x + fade[3], point.y);\n            d = pos2 - pos1;\n            c = dot(pos1, d) / dot(d, d);\n            t = smoothstep(0.0, 1.0, clamp(c, 0.0, 1.0));\n            color = mix(vec4(0.0), color, t);\n        }\n        \n        gl_FragColor = color;\n    }\n";
   var VignetteShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(VignetteShader2, _DefaultShader);
-    var _super = _createSuper(VignetteShader2);
     function VignetteShader2(context) {
       var _this;
       _classCallCheck(this, VignetteShader2);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, VignetteShader2, [context]);
       _this._magnitude = 1.3;
       _this._intensity = 0.7;
       _this._pivot = [0.5, 0.5];
@@ -21951,11 +21935,10 @@
   VignetteShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n\n    uniform float magnitude;\n    uniform float intensity;\n    uniform vec2 pivot;\n\n    void main() {\n        vec2 uv = vTextureCoord.xy - pivot + vec2(0.5);\n        uv.x = clamp(uv.x, 0.0, 1.0);\n        uv.y = clamp(uv.y, 0.0, 1.0);\n   \n        uv *=  1.00 - uv.yx;\n        float vig = uv.x * uv.y * 25.0 * intensity;\n        vig = pow(vig, 0.45 * magnitude);\n        vec4 fragColor = vec4(vig) * vColor;\n        gl_FragColor = texture2D(uSampler, vTextureCoord) * fragColor;\n\n    }\n";
   var SpinnerShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(SpinnerShader3, _DefaultShader);
-    var _super = _createSuper(SpinnerShader3);
     function SpinnerShader3(ctx) {
       var _this;
       _classCallCheck(this, SpinnerShader3);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, SpinnerShader3, [ctx]);
       _this._radius = 100;
       _this._width = 50;
       _this._period = 1;
@@ -22032,11 +22015,10 @@
   SpinnerShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n\n    uniform float iTime;\n    uniform float radius;\n    uniform float width;\n    uniform float period;\n    uniform float angle;\n    uniform float smooth;\n    uniform vec2 resolution;\n\n    uniform vec4 color;\n    uniform vec4 backgroundColor;\n\n    float ratio = resolution.y / resolution.x;\n\n    vec2 transpose_pos(vec2 pos) {\n        if (ratio < 1.) {\n            float diff = 0.5 - pos.x;\n            pos.x = 0.5 - diff / ratio;\n        } else {\n            float diff = 0.5 - pos.y;\n            pos.y = 0.5 - diff * ratio;\n        }\n        return pos;\n    }\n\n    float get_angle(vec2 pos) {\n        pos = transpose_pos(pos);\n        float a = atan(pos.y - 0.5, pos.x - 0.5);\n        a = (1.0+a/3.14159)/2.0;\n        \n        return a;\n    }\n\n    float dist(vec2 pos1, vec2 pos2) {\n        pos1 = transpose_pos(pos1);\n        return distance(pos1, pos2);\n    }\n\n    void main()\n    {\n        vec2 fragCoord = vTextureCoord;\n        vec4 fragColor = vColor;\n        \n        vec2 st = vTextureCoord;\n        float pct = dist(st, vec2(0.5));\n\n        float a = get_angle(st);\n        float t = iTime / 1000.0 / period;\n\n        float inner = max((radius - width) / resolution.x, (radius - width) / resolution.y);\n        float outer = max(radius / resolution.x, radius / resolution.y);\n\n        float x1 = mod(t, 1.0);\n        float x2 = mod(t + angle, 1.0);\n\n        if (x1 < x2) {\n            if (a > x1 && a < x2) {\n                float val = (1.0 - (x2 - a) / angle) * smoothstep(0.0, 3. * smooth, (x2 - a));\n                fragColor = mix(backgroundColor, color, val);\n            } else {\n                fragColor = backgroundColor;\n            }\n        } else {\n            if (a < x2) {\n                float val = (1.0 - (x2 - a) / angle) * smoothstep(0.0, 3. * smooth, (x2 - a));\n                fragColor = mix(backgroundColor, color, val);\n            } else if (a > x1) {\n                float val = (1.0 - (1.0 + x2 - a) / angle) * smoothstep(0.0, 3. * smooth, (1.0 + x2 - a));\n                fragColor = mix(backgroundColor, color, val);\n            } else {\n                fragColor = backgroundColor;\n            }\n        }\n\n        float s = smoothstep(inner, inner + smooth + 0.00001, pct) * (1.0 - smoothstep(outer, outer + smooth + 0.00001, pct));\n        gl_FragColor = texture2D(uSampler, fragCoord) * vColor * (1. - s * fragColor.a) + fragColor * s;\n    }\n";
   var HoleShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(HoleShader2, _DefaultShader);
-    var _super = _createSuper(HoleShader2);
     function HoleShader2(context) {
       var _this;
       _classCallCheck(this, HoleShader2);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, HoleShader2, [context]);
       _this._x = 0;
       _this._y = 0;
       _this._w = 0;
@@ -22114,11 +22096,10 @@
   HoleShader.fragmentShaderSource = "\n   #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    uniform float x;\n    uniform float y;\n    uniform float w;\n    uniform float h;\n    uniform vec2 resolution;\n    uniform float radius;\n\n    float roundBox(vec2 p, vec2 b, float r) {\n        float d = length(max(abs(p)-b+r, 0.1))-r;\n        return smoothstep(1.0, 0.0, d);\n    }\n\n    void main(void){\n        vec4 color = texture2D(uSampler, vTextureCoord);\n        vec2 pos = vTextureCoord.xy * resolution - vec2(x, y) - vec2(w, h) / 2.0;\n        vec2 size = vec2(w, h) / 2.0;\n        float b = roundBox(pos, size, radius);\n        gl_FragColor = mix(color, vec4(0.0), b) * vColor;\n    }\n";
   var RadialGradientShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(RadialGradientShader2, _DefaultShader);
-    var _super = _createSuper(RadialGradientShader2);
     function RadialGradientShader2(context) {
       var _this;
       _classCallCheck(this, RadialGradientShader2);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, RadialGradientShader2, [context]);
       _this._pivot = [0, 0];
       _this._ic = 4294967295;
       _this._normalizedIC = _this._getNormalizedColor(_this._ic);
@@ -22261,11 +22242,10 @@
   RadialGradientShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    \n    #define PI 3.14159265359\n    \n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n    uniform vec2 resolution;\n    uniform vec2 pivot;\n    uniform vec4 innerColor;\n    uniform vec4 outerColor;\n    uniform float radius;\n    uniform float radiusY;\n    uniform float alpha;\n    uniform float fill;\n    uniform float aspectRatio;\n    \n    void main() {\n        vec2 point = vTextureCoord.xy * resolution;\n        vec2 projection = vec2(pivot.x * resolution.x, pivot.y * resolution.y);\n        float d = length((point - projection) / vec2(radius * 2.0, radiusY * 2.0));\n        vec4 color = mix(texture2D(uSampler, vTextureCoord) * vColor, outerColor * alpha, fill);\n        gl_FragColor = mix(innerColor * alpha, color, smoothstep(0.0, 1.0, d));\n    }\n";
   var Light3dShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(Light3dShader2, _DefaultShader);
-    var _super = _createSuper(Light3dShader2);
     function Light3dShader2(ctx) {
       var _this;
       _classCallCheck(this, Light3dShader2);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, Light3dShader2, [ctx]);
       _this._strength = 0.5;
       _this._ambient = 0.5;
       _this._fudge = 0.4;
@@ -22410,11 +22390,10 @@
   Light3dShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    varying vec3 pos;\n    uniform sampler2D uSampler;\n    uniform float ambient;\n    uniform float strength;\n    void main(void){\n        vec4 rgba = texture2D(uSampler, vTextureCoord);\n        float d = length(pos);\n        float n = 1.0 / max(0.1, d);\n        rgba.rgb = rgba.rgb * (strength * n + ambient);\n        gl_FragColor = rgba * vColor;\n    }\n";
   var PerspectiveShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(PerspectiveShader2, _DefaultShader);
-    var _super = _createSuper(PerspectiveShader2);
     function PerspectiveShader2(ctx) {
       var _this;
       _classCallCheck(this, PerspectiveShader2);
-      _this = _super.call(this, ctx);
+      _this = _callSuper(this, PerspectiveShader2, [ctx]);
       _this._fudge = 0.2;
       _this._rx = 0;
       _this._ry = 0;
@@ -22485,11 +22464,10 @@
   PerspectiveShader.fragmentShaderSource = "\n    #ifdef GL_ES\n    # ifdef GL_FRAGMENT_PRECISION_HIGH\n    precision highp float;\n    # else\n    precision lowp float;\n    # endif\n    #endif\n    varying vec2 vTextureCoord;\n    varying vec4 vColor;\n    uniform sampler2D uSampler;\n\n    uniform vec3 rot;\n    uniform float fudge;\n\n    void main(void) {\n        vec2 coords = vTextureCoord;\n\n        coords.xy -= vec2(0.5);\n        coords.y = coords.y + (sign(rot[0]) * 0.5 - coords.x) * sin(rot[0]) * fudge * coords.y;\n        coords.x = coords.x + (sign(rot[1]) * 0.5 - coords.y) * sin(rot[1]) * fudge * coords.x;\n        coords.xy += vec2(0.5);\n\n        if (coords.x < 0.0 || coords.x > 1.0 || coords.y < 0.0 || coords.y > 1.0) {\n            gl_FragColor = vec4(0.0);\n        } else {\n            gl_FragColor = texture2D(uSampler, coords) * vColor;\n        }\n    }\n";
   var MagnifierShader = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(MagnifierShader2, _DefaultShader);
-    var _super = _createSuper(MagnifierShader2);
     function MagnifierShader2(context) {
       var _this;
       _classCallCheck(this, MagnifierShader2);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, MagnifierShader2, [context]);
       _this._x = 0;
       _this._y = 0;
       _this._w = 0;
@@ -22578,11 +22556,10 @@
   MagnifierShader.fragmentShaderSource = "\n	  #ifdef GL_ES\n		# ifdef GL_FRAGMENT_PRECISION_HIGH\n		precision highp float;\n		# else\n		precision lowp float;\n		# endif\n	  #endif\n\n	  varying vec2 vTextureCoord;\n	  varying vec4 vColor;\n	  uniform sampler2D uSampler;\n	  uniform float x;\n	  uniform float y;\n	  uniform float w;\n	  uniform float h;\n	  uniform vec2 resolution;\n	  uniform float radius;\n	  uniform float magnification;\n  \n	  float roundBox(vec2 p, vec2 b, float r) {\n		  float d = length(max(abs(p)-b+r, 0.1))-r;\n		  return smoothstep(1.0, 0.0, d);\n	  }\n\n	  float inside(vec2 v) {\n		vec2 s = step(vec2(0.0, 0.0), v) - step(vec2(1.0, 1.0), v);\n		return s.x * s.y;   \n      }\n  \n	  void main(void) {\n		vec4 color = texture2D(uSampler, vTextureCoord);\n		vec2 pos = vTextureCoord.xy * resolution - vec2(x, y) - vec2(w, h) / 2.0;\n		vec2 size = vec2(w, h) / 2.0;\n		float b = roundBox(pos, size, radius);\n		vec2 pos2 = (vTextureCoord.xy * magnification * resolution + vec2(x, y) * magnification) / resolution;\n		gl_FragColor = mix(color, texture2D(uSampler, pos2) * inside(pos2), b) * vColor;\n	  }\n  ";
   var SpinnerShader2 = /* @__PURE__ */ function(_DefaultShader) {
     _inherits(SpinnerShader22, _DefaultShader);
-    var _super = _createSuper(SpinnerShader22);
     function SpinnerShader22(context) {
       var _this;
       _classCallCheck(this, SpinnerShader22);
-      _this = _super.call(this, context);
+      _this = _callSuper(this, SpinnerShader22, [context]);
       _this._period = 1;
       _this._stroke = 0;
       _this._showDot = true;

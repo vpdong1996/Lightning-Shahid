@@ -220,7 +220,7 @@
       }
     }
   }
-  let Utils$1 = class Utils {
+  let Utils$1 = class Utils2 {
     static isFunction(value) {
       return typeof value === "function";
     }
@@ -237,8 +237,8 @@
       return typeof value === "string";
     }
     static clone(v) {
-      if (Utils$1.isObjectLiteral(v) || Array.isArray(v)) {
-        return Utils$1.getDeepClone(v);
+      if (Utils2.isObjectLiteral(v) || Array.isArray(v)) {
+        return Utils2.getDeepClone(v);
       } else {
         return v;
       }
@@ -270,7 +270,7 @@
       return typeof value === "object" && value && value.constructor === Object;
     }
     static getArrayIndex(index, arr) {
-      return Utils$1.getModuloIndex(index, arr.length);
+      return Utils2.getModuloIndex(index, arr.length);
     }
     static getModuloIndex(index, len) {
       if (len === 0)
@@ -283,21 +283,21 @@
     }
     static getDeepClone(obj) {
       let i, c;
-      if (Utils$1.isFunction(obj)) {
+      if (Utils2.isFunction(obj)) {
         return obj;
       }
       if (Array.isArray(obj)) {
         c = [];
         let keys = Object.keys(obj);
         for (i = 0; i < keys.length; i++) {
-          c[keys[i]] = Utils$1.getDeepClone(obj[keys[i]]);
+          c[keys[i]] = Utils2.getDeepClone(obj[keys[i]]);
         }
         return c;
-      } else if (Utils$1.isObject(obj)) {
+      } else if (Utils2.isObject(obj)) {
         c = {};
         let keys = Object.keys(obj);
         for (i = 0; i < keys.length; i++) {
-          c[keys[i]] = Utils$1.getDeepClone(obj[keys[i]]);
+          c[keys[i]] = Utils2.getDeepClone(obj[keys[i]]);
         }
         return c;
       } else {
@@ -307,10 +307,10 @@
     static equalValues(v1, v2) {
       if (typeof v1 !== typeof v2)
         return false;
-      if (Utils$1.isObjectLiteral(v1)) {
-        return Utils$1.isObjectLiteral(v2) && Utils$1.equalObjectLiterals(v1, v2);
+      if (Utils2.isObjectLiteral(v1)) {
+        return Utils2.isObjectLiteral(v2) && Utils2.equalObjectLiterals(v1, v2);
       } else if (Array.isArray(v1)) {
-        return Array.isArray(v2) && Utils$1.equalArrays(v1, v2);
+        return Array.isArray(v2) && Utils2.equalArrays(v1, v2);
       } else {
         return v1 === v2;
       }
@@ -329,7 +329,7 @@
         }
         const v1 = obj1[k1];
         const v2 = obj2[k2];
-        if (!Utils$1.equalValues(v1, v2)) {
+        if (!Utils2.equalValues(v1, v2)) {
           return false;
         }
       }
@@ -2321,7 +2321,7 @@
         return;
       }
       if (!this._nativeTexture && !this.isLoading()) {
-        this.loadingSince = new Date().getTime();
+        this.loadingSince = (/* @__PURE__ */ new Date()).getTime();
         this._cancelCb = this.loader((err, options) => {
           if (this.isLoading()) {
             this._cancelCb = null;
@@ -2614,6 +2614,7 @@
       this._forceZIndexContext = false;
       this._zParent = null;
       this._isRoot = false;
+      this._ignoreRTL = null;
       this._zIndexResort = false;
       this._shader = null;
       this._renderToTextureEnabled = false;
@@ -2941,7 +2942,7 @@
       let pivotXMul = this._pivotX * this._w;
       let pivotYMul = this._pivotY * this._h;
       let px;
-      if (window.isRTL) {
+      if (window.isRTL && !this._ignoreRTL) {
         px = this._x + (pivotXMul * this._localTa + pivotYMul * this._localTb) - pivotXMul;
       } else {
         px = this._x - (pivotXMul * this._localTa + pivotYMul * this._localTb) + pivotXMul;
@@ -3011,6 +3012,9 @@
             this.enableZContext(prevParent.findZContext());
           }
         }
+        if (this._ignoreRTL != false) {
+          this._setIgnoreRTL(parent);
+        }
         this._zIndexResort = true;
         if (this._zParent) {
           this._zParent.enableZSort();
@@ -3020,6 +3024,17 @@
           if (newShaderOwner !== this._shaderOwner) {
             this.setHasRenderUpdates(1);
             this._setShaderOwnerRecursive(newShaderOwner);
+          }
+        }
+      }
+    }
+    _setIgnoreRTL(parent) {
+      if (parent && parent.ignoreRTL && parent._children) {
+        for (let i = 0, n = parent._children.length; i < n; i++) {
+          let c = parent._children[i];
+          if (c && c.ignoreRTL != false) {
+            c.ignoreRTL = parent.ignoreRTL;
+            c._setIgnoreRTL(c);
           }
         }
       }
@@ -3327,6 +3342,12 @@
         });
       }
     }
+    get ignoreRTL() {
+      return this._ignoreRTL;
+    }
+    set ignoreRTL(v) {
+      this._ignoreRTL = v;
+    }
     get colorUl() {
       return this._colorUl;
     }
@@ -3551,7 +3572,7 @@
         }
         if (recalc & 6) {
           let calculatedX = this._localPx;
-          if (window.isRTL) {
+          if (window.isRTL && !this._ignoreRTL) {
             const parentW = this._element.__parent ? this._parent.w || 0 : this.ctx.stage.getOption("w");
             calculatedX = parentW - (this._w || 0) - this._localPx;
           }
@@ -3589,7 +3610,7 @@
           }
           if (init || recalc & 6) {
             let calculatedX = this._localPx;
-            if (window.isRTL) {
+            if (window.isRTL && !this._ignoreRTL) {
               const parentW = this._element.__parent ? this._parent.w || 0 : this.ctx.stage.getOption("w");
               calculatedX = parentW - (this._w || 0) - this._localPx;
             }
@@ -5224,26 +5245,18 @@
         }
       }
       let prevShadowSettings = null;
-      if (this._settings.shadow) {
-        prevShadowSettings = [this._context.shadowColor, this._context.shadowOffsetX, this._context.shadowOffsetY, this._context.shadowBlur];
-        this._context.shadowColor = StageUtils.getRgbaString(this._settings.shadowColor);
-        this._context.shadowOffsetX = this._settings.shadowOffsetX * precision;
-        this._context.shadowOffsetY = this._settings.shadowOffsetY * precision;
-        this._context.shadowBlur = this._settings.shadowBlur * precision;
-      }
       this._context.fillStyle = StageUtils.getRgbaString(this._settings.textColor);
-      for (let i = 0, n = drawLines.length; i < n; i++) {
-        let drawLine = drawLines[i];
-        if (renderInfo.letterSpacing === 0) {
-          this._context.fillText(drawLine.text, drawLine.x, drawLine.y);
-        } else {
-          const textSplit = drawLine.text.split("");
-          let x = drawLine.x;
-          for (let i2 = 0, j = textSplit.length; i2 < j; i2++) {
-            this._context.fillText(textSplit[i2], x, drawLine.y);
-            x += this.measureText(textSplit[i2], renderInfo.letterSpacing);
-          }
+      if (this._settings.shadow) {
+        prevShadowSettings = [this._context.shadowColor[0], this._context.shadowOffsetX, this._context.shadowOffsetY, this._context.shadowBlur[0]];
+        for (let i in this._settings.shadowColor) {
+          this._context.shadowColor = StageUtils.getRgbaString(this._settings.shadowColor[i]);
+          this._context.shadowOffsetX = this._settings.shadowOffsetX * precision;
+          this._context.shadowOffsetY = this._settings.shadowOffsetY * precision;
+          this._context.shadowBlur = this._settings.shadowBlur[i] * precision;
+          this.renderText(drawLines, renderInfo);
         }
+      } else {
+        this.renderText(drawLines, renderInfo);
       }
       if (prevShadowSettings) {
         this._context.shadowColor = prevShadowSettings[0];
@@ -5292,6 +5305,21 @@
     }
     measureText(word, space = 0) {
       return measureText(this._context, word, space);
+    }
+    renderText(drawLines, renderInfo) {
+      for (let i = 0, n = drawLines.length; i < n; i++) {
+        let drawLine = drawLines[i];
+        if (renderInfo.letterSpacing === 0) {
+          this._context.fillText(drawLine.text, drawLine.x, drawLine.y + 5);
+        } else {
+          const textSplit = drawLine.text.split("");
+          let x = drawLine.x;
+          for (let i2 = 0, j = textSplit.length; i2 < j; i2++) {
+            this._context.fillText(textSplit[i2], x, drawLine.y);
+            x += this.measureText(textSplit[i2], renderInfo.letterSpacing);
+          }
+        }
+      }
     }
   }
   class TextTextureRendererAdvanced {
@@ -8620,6 +8648,12 @@ ${indent}  "${refs[i]}":`;
     set flexItem(v) {
       this.__core.flexItem = v;
     }
+    get ignoreRTL() {
+      return this.__core.ignoreRTL;
+    }
+    set ignoreRTL(v) {
+      this.__core.ignoreRTL = v;
+    }
     static isColorProperty(property) {
       return property.toLowerCase().indexOf("color") >= 0;
     }
@@ -11881,7 +11915,7 @@ ${indent}  "${refs[i]}":`;
       return c2d;
     }
     getHrTime() {
-      return window.performance ? window.performance.now() : new Date().getTime();
+      return window.performance ? window.performance.now() : (/* @__PURE__ */ new Date()).getTime();
     }
     getDrawingCanvas() {
       return document.createElement("canvas");

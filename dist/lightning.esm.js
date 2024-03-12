@@ -233,8 +233,8 @@ let Utils$1 = class Utils {
     return typeof value === "string";
   }
   static clone(v) {
-    if (Utils$1.isObjectLiteral(v) || Array.isArray(v)) {
-      return Utils$1.getDeepClone(v);
+    if (Utils.isObjectLiteral(v) || Array.isArray(v)) {
+      return Utils.getDeepClone(v);
     } else {
       return v;
     }
@@ -266,7 +266,7 @@ let Utils$1 = class Utils {
     return typeof value === "object" && value && value.constructor === Object;
   }
   static getArrayIndex(index, arr) {
-    return Utils$1.getModuloIndex(index, arr.length);
+    return Utils.getModuloIndex(index, arr.length);
   }
   static getModuloIndex(index, len) {
     if (len === 0)
@@ -279,21 +279,21 @@ let Utils$1 = class Utils {
   }
   static getDeepClone(obj) {
     let i, c;
-    if (Utils$1.isFunction(obj)) {
+    if (Utils.isFunction(obj)) {
       return obj;
     }
     if (Array.isArray(obj)) {
       c = [];
       let keys = Object.keys(obj);
       for (i = 0; i < keys.length; i++) {
-        c[keys[i]] = Utils$1.getDeepClone(obj[keys[i]]);
+        c[keys[i]] = Utils.getDeepClone(obj[keys[i]]);
       }
       return c;
-    } else if (Utils$1.isObject(obj)) {
+    } else if (Utils.isObject(obj)) {
       c = {};
       let keys = Object.keys(obj);
       for (i = 0; i < keys.length; i++) {
-        c[keys[i]] = Utils$1.getDeepClone(obj[keys[i]]);
+        c[keys[i]] = Utils.getDeepClone(obj[keys[i]]);
       }
       return c;
     } else {
@@ -303,10 +303,10 @@ let Utils$1 = class Utils {
   static equalValues(v1, v2) {
     if (typeof v1 !== typeof v2)
       return false;
-    if (Utils$1.isObjectLiteral(v1)) {
-      return Utils$1.isObjectLiteral(v2) && Utils$1.equalObjectLiterals(v1, v2);
+    if (Utils.isObjectLiteral(v1)) {
+      return Utils.isObjectLiteral(v2) && Utils.equalObjectLiterals(v1, v2);
     } else if (Array.isArray(v1)) {
-      return Array.isArray(v2) && Utils$1.equalArrays(v1, v2);
+      return Array.isArray(v2) && Utils.equalArrays(v1, v2);
     } else {
       return v1 === v2;
     }
@@ -325,7 +325,7 @@ let Utils$1 = class Utils {
       }
       const v1 = obj1[k1];
       const v2 = obj2[k2];
-      if (!Utils$1.equalValues(v1, v2)) {
+      if (!Utils.equalValues(v1, v2)) {
         return false;
       }
     }
@@ -2317,7 +2317,7 @@ class TextureSource {
       return;
     }
     if (!this._nativeTexture && !this.isLoading()) {
-      this.loadingSince = new Date().getTime();
+      this.loadingSince = (/* @__PURE__ */ new Date()).getTime();
       this._cancelCb = this.loader((err, options) => {
         if (this.isLoading()) {
           this._cancelCb = null;
@@ -2610,6 +2610,7 @@ class ElementCore {
     this._forceZIndexContext = false;
     this._zParent = null;
     this._isRoot = false;
+    this._ignoreRTL = null;
     this._zIndexResort = false;
     this._shader = null;
     this._renderToTextureEnabled = false;
@@ -2937,7 +2938,7 @@ class ElementCore {
     let pivotXMul = this._pivotX * this._w;
     let pivotYMul = this._pivotY * this._h;
     let px;
-    if (window.isRTL) {
+    if (window.isRTL && !this._ignoreRTL) {
       px = this._x + (pivotXMul * this._localTa + pivotYMul * this._localTb) - pivotXMul;
     } else {
       px = this._x - (pivotXMul * this._localTa + pivotYMul * this._localTb) + pivotXMul;
@@ -3007,6 +3008,9 @@ class ElementCore {
           this.enableZContext(prevParent.findZContext());
         }
       }
+      if (this._ignoreRTL != false) {
+        this._setIgnoreRTL(parent);
+      }
       this._zIndexResort = true;
       if (this._zParent) {
         this._zParent.enableZSort();
@@ -3016,6 +3020,17 @@ class ElementCore {
         if (newShaderOwner !== this._shaderOwner) {
           this.setHasRenderUpdates(1);
           this._setShaderOwnerRecursive(newShaderOwner);
+        }
+      }
+    }
+  }
+  _setIgnoreRTL(parent) {
+    if (parent && parent.ignoreRTL && parent._children) {
+      for (let i = 0, n = parent._children.length; i < n; i++) {
+        let c = parent._children[i];
+        if (c && c.ignoreRTL != false) {
+          c.ignoreRTL = parent.ignoreRTL;
+          c._setIgnoreRTL(c);
         }
       }
     }
@@ -3323,6 +3338,12 @@ class ElementCore {
       });
     }
   }
+  get ignoreRTL() {
+    return this._ignoreRTL;
+  }
+  set ignoreRTL(v) {
+    this._ignoreRTL = v;
+  }
   get colorUl() {
     return this._colorUl;
   }
@@ -3547,7 +3568,7 @@ class ElementCore {
       }
       if (recalc & 6) {
         let calculatedX = this._localPx;
-        if (window.isRTL) {
+        if (window.isRTL && !this._ignoreRTL) {
           const parentW = this._element.__parent ? this._parent.w || 0 : this.ctx.stage.getOption("w");
           calculatedX = parentW - (this._w || 0) - this._localPx;
         }
@@ -3585,7 +3606,7 @@ class ElementCore {
         }
         if (init || recalc & 6) {
           let calculatedX = this._localPx;
-          if (window.isRTL) {
+          if (window.isRTL && !this._ignoreRTL) {
             const parentW = this._element.__parent ? this._parent.w || 0 : this.ctx.stage.getOption("w");
             calculatedX = parentW - (this._w || 0) - this._localPx;
           }
@@ -5220,26 +5241,18 @@ class TextTextureRenderer {
       }
     }
     let prevShadowSettings = null;
-    if (this._settings.shadow) {
-      prevShadowSettings = [this._context.shadowColor, this._context.shadowOffsetX, this._context.shadowOffsetY, this._context.shadowBlur];
-      this._context.shadowColor = StageUtils.getRgbaString(this._settings.shadowColor);
-      this._context.shadowOffsetX = this._settings.shadowOffsetX * precision;
-      this._context.shadowOffsetY = this._settings.shadowOffsetY * precision;
-      this._context.shadowBlur = this._settings.shadowBlur * precision;
-    }
     this._context.fillStyle = StageUtils.getRgbaString(this._settings.textColor);
-    for (let i = 0, n = drawLines.length; i < n; i++) {
-      let drawLine = drawLines[i];
-      if (renderInfo.letterSpacing === 0) {
-        this._context.fillText(drawLine.text, drawLine.x, drawLine.y);
-      } else {
-        const textSplit = drawLine.text.split("");
-        let x = drawLine.x;
-        for (let i2 = 0, j = textSplit.length; i2 < j; i2++) {
-          this._context.fillText(textSplit[i2], x, drawLine.y);
-          x += this.measureText(textSplit[i2], renderInfo.letterSpacing);
-        }
+    if (this._settings.shadow) {
+      prevShadowSettings = [this._context.shadowColor[0], this._context.shadowOffsetX, this._context.shadowOffsetY, this._context.shadowBlur[0]];
+      for (let i in this._settings.shadowColor) {
+        this._context.shadowColor = StageUtils.getRgbaString(this._settings.shadowColor[i]);
+        this._context.shadowOffsetX = this._settings.shadowOffsetX * precision;
+        this._context.shadowOffsetY = this._settings.shadowOffsetY * precision;
+        this._context.shadowBlur = this._settings.shadowBlur[i] * precision;
+        this.renderText(drawLines, renderInfo);
       }
+    } else {
+      this.renderText(drawLines, renderInfo);
     }
     if (prevShadowSettings) {
       this._context.shadowColor = prevShadowSettings[0];
@@ -5288,6 +5301,21 @@ class TextTextureRenderer {
   }
   measureText(word, space = 0) {
     return measureText(this._context, word, space);
+  }
+  renderText(drawLines, renderInfo) {
+    for (let i = 0, n = drawLines.length; i < n; i++) {
+      let drawLine = drawLines[i];
+      if (renderInfo.letterSpacing === 0) {
+        this._context.fillText(drawLine.text, drawLine.x, drawLine.y + 5);
+      } else {
+        const textSplit = drawLine.text.split("");
+        let x = drawLine.x;
+        for (let i2 = 0, j = textSplit.length; i2 < j; i2++) {
+          this._context.fillText(textSplit[i2], x, drawLine.y);
+          x += this.measureText(textSplit[i2], renderInfo.letterSpacing);
+        }
+      }
+    }
   }
 }
 class TextTextureRendererAdvanced {
@@ -8616,6 +8644,12 @@ ${indent}  "${refs[i]}":`;
   set flexItem(v) {
     this.__core.flexItem = v;
   }
+  get ignoreRTL() {
+    return this.__core.ignoreRTL;
+  }
+  set ignoreRTL(v) {
+    this.__core.ignoreRTL = v;
+  }
   static isColorProperty(property) {
     return property.toLowerCase().indexOf("color") >= 0;
   }
@@ -11877,7 +11911,7 @@ class WebPlatform {
     return c2d;
   }
   getHrTime() {
-    return window.performance ? window.performance.now() : new Date().getTime();
+    return window.performance ? window.performance.now() : (/* @__PURE__ */ new Date()).getTime();
   }
   getDrawingCanvas() {
     return document.createElement("canvas");

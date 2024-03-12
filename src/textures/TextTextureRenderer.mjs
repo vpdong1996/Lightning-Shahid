@@ -334,30 +334,22 @@ export default class TextTextureRenderer {
 
         // Text shadow.
         let prevShadowSettings = null;
-        if (this._settings.shadow) {
-            prevShadowSettings = [this._context.shadowColor, this._context.shadowOffsetX, this._context.shadowOffsetY, this._context.shadowBlur];
-
-            this._context.shadowColor = StageUtils.getRgbaString(this._settings.shadowColor);
-            this._context.shadowOffsetX = this._settings.shadowOffsetX * precision;
-            this._context.shadowOffsetY = this._settings.shadowOffsetY * precision;
-            this._context.shadowBlur = this._settings.shadowBlur * precision;
-        }
 
         this._context.fillStyle = StageUtils.getRgbaString(this._settings.textColor);
-        for (let i = 0, n = drawLines.length; i < n; i++) {
-            let drawLine = drawLines[i];
+        if (this._settings.shadow) {
+            prevShadowSettings = [this._context.shadowColor[0], this._context.shadowOffsetX, this._context.shadowOffsetY, this._context.shadowBlur[0]];
 
-            if (renderInfo.letterSpacing === 0) {
-                this._context.fillText(drawLine.text, drawLine.x, drawLine.y);
-            } else {
-                const textSplit = drawLine.text.split('');
-                let x = drawLine.x;
-                for (let i = 0, j = textSplit.length; i < j; i++) {
-                    this._context.fillText(textSplit[i], x, drawLine.y);
-                    x += this.measureText(textSplit[i], renderInfo.letterSpacing);
-                }
+            for (let i in this._settings.shadowColor) {
+                this._context.shadowColor = StageUtils.getRgbaString(this._settings.shadowColor[i]);
+                this._context.shadowOffsetX = this._settings.shadowOffsetX * precision;
+                this._context.shadowOffsetY = this._settings.shadowOffsetY * precision;
+                this._context.shadowBlur = this._settings.shadowBlur[i] * precision;
+                this.renderText(drawLines, renderInfo);
             }
+        } else {
+            this.renderText(drawLines, renderInfo);
         }
+
 
         if (prevShadowSettings) {
             this._context.shadowColor = prevShadowSettings[0];
@@ -398,7 +390,7 @@ export default class TextTextureRenderer {
                 }
             }
 
-        /* In case guess was underestimated, extend it letter by letter. */
+            /* In case guess was underestimated, extend it letter by letter. */
         } else {
             while (cutoffIndex < wordLen) {
                 truncWordWidth = this.measureText(word.substring(0, cutoffIndex)) + suffixWidth;
@@ -438,6 +430,23 @@ export default class TextTextureRenderer {
      */
     measureText(word, space = 0) {
         return measureText(this._context, word, space);
+    }
+
+    renderText(drawLines, renderInfo) {
+        for (let i = 0, n = drawLines.length; i < n; i++) {
+            let drawLine = drawLines[i];
+
+            if (renderInfo.letterSpacing === 0) {
+                this._context.fillText(drawLine.text, drawLine.x, drawLine.y + 5);
+            } else {
+                const textSplit = drawLine.text.split('');
+                let x = drawLine.x;
+                for (let i = 0, j = textSplit.length; i < j; i++) {
+                    this._context.fillText(textSplit[i], x, drawLine.y);
+                    x += this.measureText(textSplit[i], renderInfo.letterSpacing);
+                }
+            }
+        }
     }
 
 }

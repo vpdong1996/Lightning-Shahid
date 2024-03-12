@@ -68,7 +68,7 @@ export default class TextTextureRenderer {
                         }
                     });
                 }
-            } catch(e) {
+            } catch (e) {
                 console.warn("[Lightning] Can't check font loading for " + fontSetting);
             }
         }
@@ -120,7 +120,7 @@ export default class TextTextureRenderer {
         }
 
         if (!wordWrapWidth) {
-            wordWrapWidth = innerWidth
+            wordWrapWidth = innerWidth;
         }
 
         // Text overflow
@@ -136,7 +136,7 @@ export default class TextTextureRenderer {
                 default:
                     suffix = this._settings.textOverflow;
             }
-            this._settings.text = this.wrapWord(this._settings.text, wordWrapWidth - textIndent, suffix)
+            this._settings.text = this.wrapWord(this._settings.text, wordWrapWidth - textIndent, suffix);
         }
 
         // word wrap
@@ -145,7 +145,7 @@ export default class TextTextureRenderer {
         if (this._settings.wordWrap) {
             linesInfo = this.wrapText(this._settings.text, wordWrapWidth, letterSpacing, textIndent);
         } else {
-            linesInfo = {l: this._settings.text.split(/(?:\r\n|\r|\n)/), n: []};
+            linesInfo = { l: this._settings.text.split(/(?:\r\n|\r|\n)/), n: [] };
             let i, n = linesInfo.l.length;
             for (let i = 0; i < n - 1; i++) {
                 linesInfo.n.push(i);
@@ -313,7 +313,7 @@ export default class TextTextureRenderer {
             }
             linePositionX += renderInfo.paddingLeft;
 
-            drawLines.push({text: renderInfo.lines[i], x: linePositionX, y: linePositionY, w: renderInfo.lineWidths[i]});
+            drawLines.push({ text: renderInfo.lines[i], x: linePositionX, y: linePositionY, w: renderInfo.lineWidths[i] });
         }
 
         // Highlight.
@@ -334,30 +334,22 @@ export default class TextTextureRenderer {
 
         // Text shadow.
         let prevShadowSettings = null;
-        if (this._settings.shadow) {
-            prevShadowSettings = [this._context.shadowColor, this._context.shadowOffsetX, this._context.shadowOffsetY, this._context.shadowBlur];
-
-            this._context.shadowColor = StageUtils.getRgbaString(this._settings.shadowColor);
-            this._context.shadowOffsetX = this._settings.shadowOffsetX * precision;
-            this._context.shadowOffsetY = this._settings.shadowOffsetY * precision;
-            this._context.shadowBlur = this._settings.shadowBlur * precision;
-        }
 
         this._context.fillStyle = StageUtils.getRgbaString(this._settings.textColor);
-        for (let i = 0, n = drawLines.length; i < n; i++) {
-            let drawLine = drawLines[i];
+        if (this._settings.shadow) {
+            prevShadowSettings = [this._context.shadowColor[0], this._context.shadowOffsetX, this._context.shadowOffsetY, this._context.shadowBlur[0]];
 
-            if (renderInfo.letterSpacing === 0) {
-                this._context.fillText(drawLine.text, drawLine.x, drawLine.y);
-            } else {
-                const textSplit = drawLine.text.split('');
-                let x = drawLine.x;
-                for (let i = 0, j = textSplit.length; i < j; i++) {
-                    this._context.fillText(textSplit[i], x, drawLine.y);
-                    x += this.measureText(textSplit[i], renderInfo.letterSpacing);
-                }
+            for (let i in this._settings.shadowColor) {
+                this._context.shadowColor = StageUtils.getRgbaString(this._settings.shadowColor[i]);
+                this._context.shadowOffsetX = this._settings.shadowOffsetX * precision;
+                this._context.shadowOffsetY = this._settings.shadowOffsetY * precision;
+                this._context.shadowBlur = this._settings.shadowBlur[i] * precision;
+                this.renderText(drawLines, renderInfo);
             }
+        } else {
+            this.renderText(drawLines, renderInfo);
         }
+
 
         if (prevShadowSettings) {
             this._context.shadowColor = prevShadowSettings[0];
@@ -375,7 +367,7 @@ export default class TextTextureRenderer {
 
     wrapWord(word, wordWrapWidth, suffix) {
         const suffixWidth = this.measureText(suffix);
-        const wordLen = word.length
+        const wordLen = word.length;
         const wordWidth = this.measureText(word);
 
         /* If word fits wrapWidth, do nothing */
@@ -398,7 +390,7 @@ export default class TextTextureRenderer {
                 }
             }
 
-        /* In case guess was underestimated, extend it letter by letter. */
+            /* In case guess was underestimated, extend it letter by letter. */
         } else {
             while (cutoffIndex < wordLen) {
                 truncWordWidth = this.measureText(word.substring(0, cutoffIndex)) + suffixWidth;
@@ -406,7 +398,7 @@ export default class TextTextureRenderer {
                     cutoffIndex += 1;
                 } else {
                     // Finally, when bound is crossed, retract last letter.
-                    cutoffIndex -=1;
+                    cutoffIndex -= 1;
                     break;
                 }
             }
@@ -438,6 +430,23 @@ export default class TextTextureRenderer {
      */
     measureText(word, space = 0) {
         return measureText(this._context, word, space);
+    }
+
+    renderText(drawLines, renderInfo) {
+        for (let i = 0, n = drawLines.length; i < n; i++) {
+            let drawLine = drawLines[i];
+
+            if (renderInfo.letterSpacing === 0) {
+                this._context.fillText(drawLine.text, drawLine.x, drawLine.y + 5);
+            } else {
+                const textSplit = drawLine.text.split('');
+                let x = drawLine.x;
+                for (let i = 0, j = textSplit.length; i < j; i++) {
+                    this._context.fillText(textSplit[i], x, drawLine.y);
+                    x += this.measureText(textSplit[i], renderInfo.letterSpacing);
+                }
+            }
+        }
     }
 
 }
