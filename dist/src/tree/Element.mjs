@@ -2054,6 +2054,14 @@ export default class Element {
         this.__core.flexItem = v;
     }
 
+    get ignoreRTL() {
+        return this.__core.ignoreRTL;
+    }
+
+    set ignoreRTL(v) {
+        this.__core.ignoreRTL = v;
+    }
+
     static isColorProperty(property) {
         return property.toLowerCase().indexOf("color") >= 0;
     }
