@@ -395,6 +395,9 @@ export default class ElementCore {
     }
 
     set pivotX(v) {
+        if (window.isRTL && !this._ignoreRTL) {
+            v = 1 - v;
+        }
         if (this._pivotX !== v) {
             this._pivotX = v;
             this._updateLocalTranslate();
