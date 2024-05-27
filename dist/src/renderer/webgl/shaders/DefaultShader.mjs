@@ -61,6 +61,7 @@ export default class DefaultShader extends WebGLShader {
         let gl = this.gl;
 
         let length = operation.length;
+        let numQuads = operation.shader?.numQuads || 0;
 
         if (length) {
             let glTexture = operation.getTexture(0);
@@ -74,9 +75,12 @@ export default class DefaultShader extends WebGLShader {
                     pos = i;
                 }
             }
-            
+            const count = numQuads ? numQuads * 6 : 6 * (length - pos);
+            const offset = (operation.quads.offset / 20) * 6 * 2;
+
+            // Please Check offset before rendering if texture not rendered.
             gl.bindTexture(gl.TEXTURE_2D, glTexture);
-            gl.drawElements(gl.TRIANGLES, 6 * (length - pos), gl.UNSIGNED_SHORT, (pos + operation.index) * 6 * 2);
+            gl.drawElements(gl.TRIANGLES, count, gl.UNSIGNED_SHORT, offset);
         }
     }
 

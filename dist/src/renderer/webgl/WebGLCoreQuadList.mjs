@@ -33,6 +33,7 @@ export default class WebGLCoreQuadList extends CoreQuadList {
         this.data = new ArrayBuffer(byteSize);
         this.floats = new Float32Array(this.data);
         this.uints = new Uint32Array(this.data);
+        this.offset = 0;
     }
 
     getAttribsDataByteOffset(index) {

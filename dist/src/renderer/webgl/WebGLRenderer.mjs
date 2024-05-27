@@ -37,11 +37,11 @@ export default class WebGLRenderer extends Renderer {
             etc1: stage.gl.getExtension('WEBGL_compressed_texture_etc1'),
             s3tc: stage.gl.getExtension('WEBGL_compressed_texture_s3tc'),
             pvrtc: stage.gl.getExtension('WEBGL_compressed_texture_pvrtc'),
-        }
+        };
     }
 
     getCompressedTextureExtensions() {
-        return this._compressedTextureExtensions
+        return this._compressedTextureExtensions;
     }
 
     destroy() {
@@ -59,7 +59,7 @@ export default class WebGLRenderer extends Renderer {
     }
 
     _getShaderBaseType() {
-        return WebGLShader
+        return WebGLShader;
     }
 
     _getShaderAlternative(shaderType) {
@@ -158,7 +158,7 @@ export default class WebGLRenderer extends Renderer {
         const source = options.source;
         let compressed = false;
         if (options.renderInfo) {
-            compressed = options.renderInfo.compressed || false
+            compressed = options.renderInfo.compressed || false;
         }
 
         const format = {
@@ -182,8 +182,8 @@ export default class WebGLRenderer extends Renderer {
             format.premultiplyAlpha = false;
         }
 
-        format.texParams = options.texParams || {}
-        format.texOptions = options.texOptions || {}
+        format.texParams = options.texParams || {};
+        format.texOptions = options.texOptions || {};
 
         let glTexture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, glTexture);
@@ -209,7 +209,7 @@ export default class WebGLRenderer extends Renderer {
             this.stage.platform.uploadCompressedGlTexture(gl, textureSource, source);
             return glTexture;
         }
-         
+
         const texOptions = format.texOptions;
         texOptions.format = texOptions.format || (format.hasAlpha ? gl.RGBA : gl.RGB);
         texOptions.type = texOptions.type || gl.UNSIGNED_BYTE;
@@ -217,9 +217,9 @@ export default class WebGLRenderer extends Renderer {
         if (options && options.imageRef) {
             texOptions.imageRef = options.imageRef;
         }
-        
+
         this.stage.platform.uploadGlTexture(gl, textureSource, source, texOptions);
-        
+
         glTexture.params = Utils.cloneObjShallow(texParams);
         glTexture.options = Utils.cloneObjShallow(texOptions);
 
@@ -233,15 +233,25 @@ export default class WebGLRenderer extends Renderer {
         this.stage.gl.deleteTexture(textureSource.nativeTexture);
     }
 
-    addQuad(renderState, quads, index) {
-        let offset = (index * 20);
-        const elementCore = quads.quadElements[index];
+    addQuad(renderState, quads, index, addSdfQuad) {
+        const sdfLength = renderState._shader?.length;
 
+        let offset = renderState._offset;
+        renderState.quads.offset = offset;
+
+        const elementCore = quads.quadElements[index];
         let r = elementCore._renderContext;
 
         let floats = renderState.quads.floats;
         let uints = renderState.quads.uints;
+
         const mca = StageUtils.mergeColorAlpha;
+
+        if (addSdfQuad) {
+            addSdfQuad(renderState, quads, index, offset);
+            renderState._offset += sdfLength / 4;
+            return;
+        }
 
         if (r.tb !== 0 || r.tc !== 0) {
             floats[offset++] = r.px;
@@ -290,6 +300,7 @@ export default class WebGLRenderer extends Renderer {
             floats[offset++] = elementCore._bry;
             uints[offset] = mca(elementCore._colorBl, r.alpha);
         }
+        renderState._offset += 20;
     }
 
     isRenderTextureReusable(renderState, renderTextureInfo) {

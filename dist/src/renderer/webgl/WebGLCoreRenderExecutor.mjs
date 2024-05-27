@@ -34,7 +34,6 @@ export default class WebGLCoreRenderExecutor extends CoreRenderExecutor {
 
         // Create new sharable buffer for params.
         this._attribsBuffer = gl.createBuffer();
-
         let maxQuads = Math.floor(this.renderState.quads.data.byteLength / 80);
 
         // Init webgl arrays.
@@ -57,7 +56,6 @@ export default class WebGLCoreRenderExecutor extends CoreRenderExecutor {
 
         // The matrix that causes the [0,0 - W,H] box to map to [-1,-1 - 1,1] in the end results.
         this._projection = new Float32Array([2/this.ctx.stage.coordsWidth, -2/this.ctx.stage.coordsHeight]);
-
     }
 
     destroy() {

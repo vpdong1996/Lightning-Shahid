@@ -30,6 +30,8 @@ export default class CoreRenderState {
 
         this.quads = this.renderer.createCoreQuadList(ctx);
 
+        this._offset = 0;
+
     }
 
     reset() {
@@ -56,9 +58,9 @@ export default class CoreRenderState {
         this.quads.reset();
 
         this._temporaryTexturizers = [];
-        
         this._isCachingTexturizer = false;
 
+        this._offset = 0;
     }
 
     get length() {
@@ -162,12 +164,16 @@ export default class CoreRenderState {
             this._renderTextureInfo.empty = false;
         }
 
+        const addSdfQuad = this._shader?.addSdfQuad;
+
         this.quads.quadTextures.push(nativeTexture);
         this.quads.quadElements.push(elementCore);
 
+        // this._quadOperation.length += addSdfQuad ? this._shader.numQuads : 1;
         this._quadOperation.length++;
 
-        this.renderer.addQuad(this, this.quads, this.length - 1)
+        console.log("this._quadOperation.length", this._quadOperation.length);
+        this.renderer.addQuad(this, this.quads, this.length - 1, addSdfQuad);
     }
 
     finishedRenderTexture() {
@@ -185,7 +191,7 @@ export default class CoreRenderState {
         const offset = this._renderTextureInfo.offset;
         return (this.quads.quadTextures[offset].w === this._renderTextureInfo.w) &&
             (this.quads.quadTextures[offset].h === this._renderTextureInfo.h) &&
-            this.renderer.isRenderTextureReusable(this, this._renderTextureInfo)
+            this.renderer.isRenderTextureReusable(this, this._renderTextureInfo);
     }
 
     _hasChanges() {
